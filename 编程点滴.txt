@@ -1,0 +1,5 @@
+1、ExceptionTranslationFilter应该放置于其他filter前，能够捕捉其他的filter产生的错误，并进行处理或者跳转。比如某filter抛错AccessDeniedException错误，可以处理跳转到“无权访问页面”。
+
+2、java  -classpath .;ERM_lib.jar;log4j-1.2.11.jar;spring-2.0.jar;commons-logging-1.1.jar;commons-lang-2.1.jar;commons-io-1.2.jar com.norteksoft.erm.license.SystemInfo
+
+3、eclipse中1、Preferences -> Java -> Editor -> Content Assist -> Favorites.添加常用的静态类.2、Ctrl+Shift+M选择静态方法，可快速导入静态类。参考:http://piotrjagielski.com/blog/working-with-static-imports-in-eclipse/

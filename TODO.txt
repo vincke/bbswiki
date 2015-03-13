@@ -1,0 +1,158 @@
+选型：
+Done 0、spring3MVC
+
+Done 1、iBatis
+
+2、spring-Core
+
+DONE 3、EL选择：aviator、fast-el、simpleel、ognl、mvel
+    tomcat6 只支持el2.1
+    tomcat7 支持el2.2
+    只有el2.2才支持调用方法或者方法传参数或者调用静态方法
+    可以通过扩展jstl:fn 提供方法注入表达式，并将表达式解析需要的上下文放入threadlocal中，通过filter，在解析jsp前，获得上下文注入el表达式解析引擎。
+   其他解决方案：
+
+http://seamframework.org/Documentation/ELWishList
+http://blogs.oracle.com/rlubke/entry/unified_expression_language_is_and
+
+tomcat6即使打补丁也只能用jface上
+http://huksley.sdot.ru/141/tomcat-and-unified-e22.html Tomcat and Unified EL 2.2
+http://code2inspire.wordpress.com/2010/11/05/how-to-enable-el-2-2-on-tomcat-6/
+
+解决方法1：Call解决
+http://www.vineetmanohar.com/2010/07/how-to-pass-parameters-in-el-methods/
+http://www.vineetmanohar.com/2010/08/calling-static-methods-from-el/
+
+解决方法2：spring解决(该方法好)
+http://stackoverflow.com/questions/6194164/jspx-el-2-2-method-calling-using-el-2-1
+<spring:eval expression="page.getPageSize()" var="bb"/>调用方法执行并赋值bb
+
+解决方法3:fn扩展集成spring解决
+http://blog.csdn.net/lfsfxy9/article/details/6221329
+
+4、JSON选择：fastjson、jackson-json
+
+
+5、javascript:jQuery和prototype
+
+
+6、消息选择：memcacheQ  Kafka(Jafka) FQueue kestrel gearman httpsqs TimeTunnel Scribe、flume、activemq、ZeroMQ、notity、metamorphosis、RabbitMQ
+   啥是消息系统？用户发消息如何解决？ 
+   http://www.iteye.com/topic/1113331
+   http://www.iteye.com/topic/468921
+   http://gearman.org/ 
+   http://highscalability.com/blog/2009/1/13/product-gearman-open-source-message-queuing-system.html
+   http://highscalability.com/blog/2011/5/17/facebook-an-example-canonical-architecture-for-scaling-billi.html
+   http://blog.s135.com/httpsqs/ 
+   http://code.google.com/p/httpsqs/
+   http://code.taobao.org/p/TimeTunnel/wiki/index/
+   http://code.google.com/p/fqueue/
+   http://www.blogjava.net/xylz/archive/2012/05/10/377759.html
+   jafka
+     java版实现：（搜狐山寨版）https://github.com/adyliu/jafka
+                 （淘宝山寨版）https://github.com/killme2008/Metamorphosis
+				http://metaq.taobao.org/
+   				http://code.taobao.org/p/metamorphosis/wiki/index/
+     scala版实现：http://incubator.apache.org/kafka/
+   Scribe
+      http://github.com/facebook/scribe
+   flume
+      http://github.com/cloudera/flume
+   RabbitMQ(erlang)
+     http://www.rabbitmq.com
+	
+7、(some done)缓存选择：memcached、Redis、TT/TC、Berkeley DB 研究
+   a、cache切面，代理
+   b、缓存的注解减少代码 
+   c、细粒度缓存控制
+   d、memcached的监控、IO流量监控
+
+8、(DONE)数据库：MongoDB
+    1、读写分离
+    2、驱动选择
+    3、对每个查询语句进行explain审计，优化索引效率；
+    4、Aggregation Framework
+
+9、集成Dubbo框架,分布式服务
+
+
+10、jmx支持
+
+
+11、(DONE)jvm优化
+    a、参数优化
+    b、原理
+
+12、concurrent
+
+15、session复制
+    （补充J2EE集群就是 apache(ngix)+jk_mod+N个tomcat实现失败转移和负载均衡）
+    a、考虑扩展spring的MVC
+    b、参考淘宝的webex的对store的处理(AbstractRequestWrapper、CsrfToken)
+    c、全局统一的sessionID生成与判断
+    2种实现方式：1、将session中所有东西保存在cookie里(能不能保存?)
+                 2、将session中所有东西保存在cache里
+
+16、配置管理
+    a、日志动态调整
+    b、全局配置可动态调整
+
+DONE 17、安全认证
+    a、登陆方式(页面登陆\cookie跨域登陆\ticket登陆\互联网api登陆\cas登陆\域登陆\basic登陆)
+    b、访问权限：1、可匿名访问；2、权限访问
+    c、登陆跳转
+
+18、CSS样式
+    a、Alice CSS样式支持
+    b、bootstrap 样式研究
+
+19、翻页
+    1、后台 displaytag 
+    2、前台
+
+20、Webqq用openfire + jwchat
+
+21、mysql 
+    高性能MySQL的前端 Vtocc http://code.google.com/p/vitess/ http://www.oschina.net/p/vtocc
+
+组件研究队列：
+1、阿里巴巴的druid；(数据库连接池优化审计)
+2、阿里巴巴的dubbo；（分布式服务）
+3、阿里巴巴的
+2、淘宝的HSF；（分布式服务）
+3、淘宝的tair；（ key/value storage system）
+4、淘宝的tfs；（分布式文件系统）
+5、淘宝的oceanBean(淘宝分布式数据库)
+6、淘宝的webx（全能的web开发框架）
+7、淘宝的notity:消息中间件
+8、淘宝的Myfox/Nodefox （一个针对海量统计数据设计的高性能分布式MySQL集群中间层）
+
+框架：
+1、基础框架：
+2、日志框架：
+3、安全框架：
+4、缓存策略；
+
+功能：
+1、流量压缩：comprassFilter(liferay6)
+2、数据库监控和分析：
+3、缓存监控和管理：
+
+
+
+=================================================================
+{}、UML和模式应用（原书第3版）、用例驱动的UML对象建模应用：范例分析
+0、深入理解Java虚拟机:JVM高级特性与最佳实践
+1、jQuery实战
+2、mysql  2本 高性能MySQL、 MySQL性能调优与架构设计
+3、Oracle 2本 Oracle Database10g PL/SQL程序设计、Oracle Database 10g性能调整与优化
+3、构建高性能Web站点
+4、实战Nginx 
+7、linux
+5、走出软件作坊 
+6、产品经理 2本 人人都是产品经理
+3、重构－改善既有代码的设计
+
+====================================================================
+
+

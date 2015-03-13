@@ -1,0 +1,15 @@
+1、node节点，有action时，触发action，停留该节点，或者触发事件,自动进入下一节点（自动节点）；
+2、state节点，停留等待代码触发进入下一节点。
+3、JbpmConfiguration作用 JbpmContext jbpmContext = JbpmConfiguration.getInstance().createJbpmContext();通过JbpmConfiguration创建的jbpmContext对象，在使用完毕后需要调用jbpmContext.close()方法将其关闭。
+4、Token定位当前流程节点所处的位置。
+5、context中存储的变量可为基础类型或者可序列化对象。且有作用域。
+6、node节点与ActionHandler接口 可以在节点、动作、路由中配置。 class、ref-name和expression三者选一
+7、tasknode与AssignmentHandler接口、TaskControllerHandler接口
+8、decision与DecisionHandler接口
+9、可以给任务实例指定多个参与者，这多个人就是这个任务实例的潜在所有者。所谓潜在，就是每个参与者都可以处理任务，都可以看到这个任务，但是最终的处理者只有一个。所以在处理这种有多个参与者任务实例的时候，通常做法是：如果某个参与者想处理该任务实例，首先要将其拉到自己的任务池中【首先拿到该任务实例对象，然后调用该任务实例对象的setActorId（）方法】，然后该参与者再对其进行处理。
+10、任务指定：AssignmentHandler方式、expression方式、swimlame方式、pooledActors方式（jpdl）、actor方式（jpdl）
+11、任务时间：task-create、task-assign、task-end
+12、taskController:一个用来将流程上下文里的变量输出到任务实例（客户端）；一个用来接收用户输入，将用户输入的值通过任务实例回写到流程上下文当中。简单的说，就是处理输入与输出。
+13、<quantity> [business] <unit> 与jbpm.business.calendar.properties文件 second 、seconds、 minute、minutes、hour 、hours、day、days 、week、weeks、month、months 、year 或years
+
+

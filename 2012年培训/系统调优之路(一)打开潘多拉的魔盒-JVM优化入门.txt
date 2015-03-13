@@ -1,0 +1,41 @@
+1、JVM基础
+   a、JVM
+      1
+   b、内存分配及OOM
+      JVM的内存分配
+      物理内存=JAVA堆(Xmx)+方法区(-XX:MaxPermSize)+（虚拟机栈、本地方法栈、运行时常量池、直接内存）+ 运行OS内存
+      JAVA堆
+	分代（新生代(eden+survior*2)+老生代）
+	为什么要分代
+	内存溢出演示
+      方法区
+	内存溢出演示
+      虚拟机栈
+	内存溢出演示
+    c、垃圾收集器
+       1、垃圾收集算法
+          a、标记-清除 b、复制算法 c、标记-整理 d、分代收集
+       2、新生代
+          Serial
+	  ParNew
+	  Parallel Scavenge
+       3、老生代
+          Serial Old
+	  CMS
+	  Parallel Old
+	3、G1
+2、JVM优化
+   a、性能监控工具
+      命令行工具：jps、jstat、jinfo、jmap、jhat、jstack
+      图形化工具：jconsole、jvisualvm、MAT
+      实时输入输出：Btrace
+   b、JVM优化策略
+   c、JVM常用性能优化参数
+   d、JVM常用调试参数
+   e、常用JVM启动配置
+3、实战优化
+   a、优化eclipse启动
+   b、业务系统优化测试
+
+
+      

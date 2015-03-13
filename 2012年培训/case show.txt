@@ -1,0 +1,57 @@
+BTace
+1、调用此方法时传入的是什么参数，返回的是什么值，当时sleepTotalTime是多少？
+@OnMethod(
+      clazz="CaseObject",
+      method="execute",
+      location=@Location(Kind.RETURN)
+   )
+   public static void traceExecute(@Self CaseObject instance,int sleepTime,@Return boolean result){
+     println("call CaseObject.execute");
+     println(strcat("sleepTime is:",str(sleepTime)));
+     println(strcat("sleepTotalTime is:",str(get(field("CaseObject","sleepTotalTime"),instance))));
+     println(strcat("return value is:",str(result)));
+   }
+
+2、execute方法执行耗时是多久？
+ @TLS static long beginTime;
+ 
+   @OnMethod(
+      clazz="CaseObject",
+      method="execute"
+   )
+   public static void traceExecuteBegin(){
+     beginTime=timeMillis();
+   }
+ 
+   @OnMethod(
+      clazz="CaseObject",
+      method="execute",
+      location=@Location(Kind.RETURN)
+   )
+   public static void traceExecute(int sleepTime,@Return boolean result){
+      println(strcat(strcat("CaseObject.execute time is:",str(timeMillis()-beginTime)),"ms"));
+   }
+
+ 3、谁调用了execute方法？
+ @OnMethod(
+      clazz="CaseObject",
+      method="execute"
+   )
+   public static void traceExecute(){
+     println("who call CaseObject.execute :");
+     jstack();
+   }
+
+
+4、有没有人调用CaseObject中的哪一行代码？
+	 @OnMethod(
+      clazz="CaseObject",
+      location=@Location(value=Kind.LINE,line=8)
+   )
+   public static void traceExecute(@ProbeClassName String pcn,@ProbeMethodName String pmn,int line){
+     println(strcat(strcat(strcat("call ",pcn),"."),pmn));
+   }
+
+
+
+

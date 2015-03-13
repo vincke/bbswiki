@@ -1,0 +1,19 @@
+http://pac.internal.baidu.com/bdnew.pac
+agent.baidu.com 8118
+
+git关键字：Objective-C  IOS cocoa
+(15912)AFNetworking（网络操作）https://github.com/AFNetworking/AFNetworking
+(5316)ASIHTTPRequest（网络操作）https://github.com/pokeb/asi-http-request
+(4717)JSONKit（JSON序列化与反序列化）https://github.com/johnezang/JSONKit
+json-framework（JSON序列化与反序列化）https://github.com/stig/json-framework
+BeeFramework（这个不解释）https://github.com/gavinkwoe/BeeFramework
+Masonry（包装AutoLayout ）https://github.com/Masonry/Masonry
+PureLayout（包装AutoLayout ）https://github.com/smileyborg/PureLayout
+FXForms（表单生成器）https://github.com/nicklockwood/FXForms
+
+FastImageCache
+
+xcode 插件
+
+mac 神器
+

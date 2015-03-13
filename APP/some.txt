@@ -1,0 +1,1246 @@
+0、常用函数
+CGSize *size = CGSizeMake（1.0f,2.0f）
+//矩形
+CGRect *rect = CGRectMake(0, 0, 320, 44); 
+[xxxView setFrame:CGRectMake(0, 0, 320, 44)];
+//获得屏幕读长和宽
+#define kDeviceWidth [UIScreen mainScreen].bounds.size.width
+#define KDeviceHeight [UIScreen mainScreen].bounds.size.height
+
+pod install --verbose --no-repo-update
+pod update --verbose --no-repo-update
+
+1、 //设置背景颜色
+[self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"main_background.png"]]];
+
+2、 //添加headbar 
+    UIImage *headimage = [UIImage imageNamed:@"head_background.png"];
+    UIImageView *headView = [[UIImageView alloc]initWithImage:headimage];
+    [headView setFrame:CGRectMake(0, 0, 320, 44)];
+    [self.view addSubview:headView];
+  
+3、  //图片形式表现按钮 
+    photobtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [photobtn setFrame:CGRectMake(8,6,32,32)];
+    [photobtn setBackgroundImage:[UIImage imageNamed:@"icon_pic_enable.png"] forState:UIControlStateNormal];
+    [photobtn addTarget:self action:@selector(BtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [photobtn setTag:FPhoto];
+    [photobtn setHidden:YES];
+    [self.view addSubview:photobtn];
+    
+    // 文字形式表现按钮
+    fourTypebtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [fourTypebtn setFrame:CGRectMake(120,6,80,32)];
+    [fourTypebtn setTitle:@"随便逛逛" forState:UIControlStateNormal];
+    [fourTypebtn.titleLabel setFont:[UIFont fontWithName:@"AppleGothic" size:18]];
+    [fourTypebtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [fourTypebtn addTarget:self action:@selector(BtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [fourTypebtn setTag:FFourtype];
+    [fourTypebtn setHidden:YES];
+    [self.view addSubview:fourTypebtn];
+
+    //按钮图文混排（左边图片，右边文字）
+        //添加Button，顶，踩，评论  
+        goodbtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [goodbtn setFrame:CGRectMake(10,txtContent.frame.size.height-30,70,32)];
+        [goodbtn setBackgroundImage:[UIImage imageNamed:@"button_vote.png"] forState:UIControlStateNormal];
+        [goodbtn setBackgroundImage:[UIImage imageNamed:@"button_vote_active.png"] forState:UIControlStateHighlighted];
+        [goodbtn setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 25)];
+        [goodbtn setImage:[UIImage imageNamed:@"icon_for_good.png"] forState:UIControlStateNormal];
+        [goodbtn setTitleEdgeInsets:UIEdgeInsetsMake(0, 0, 0, -25)];
+        [goodbtn setTitle:@"0" forState:UIControlStateNormal];
+        [goodbtn.titleLabel setFont:[UIFont fontWithName:@"Arial" size:14]];
+        [goodbtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [goodbtn addTarget:self action:@selector(BtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:goodbtn];
+
+4、控件自动视频iphone4/5/6
+UILabel*    label = [[UILabel alloc] initWithFrame:CGRectMake(50, 100, 200, 40)];
+[label setAutoresizingMask: UIViewAutoresizingNone];  控件相对于俯视图坐标值不变  
+UIViewAutoresizingFlexibleTopMargin:与superView上边界保持动态距离(按比例)
+UIViewAutoresizingFlexibleBottomMargin:与superView下边界保持动态距离(按比例)
+UIViewAutoresizingFlexibleLeftMargin:与superView左边界保持动态距离(按比例)
+UIViewAutoresizingFlexibleRightMargin:与superView右边界保持动态距离(按比例)
+UIViewAutoresizingFlexibleWidth:与superView宽度成比例
+UIViewAutoresizingFlexibleHeight:与superView高度成比例
+适配ip6 http://www.tuicool.com/articles/ENR7fyq
+在AppDelegate.h中
+@property float autoSizeScaleX;
+@property float autoSizeScaleY;
+修改
+#define ScreenHeight [[UIScreen mainScreen] bounds].size.height//获取屏幕高度，兼容性测试
+#define ScreenWidth [[UIScreen mainScreen] bounds].size.width//获取屏幕宽度，兼容性测试
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+  AppDelegate *myDelegate = [[UIApplication sharedApplication] delegate];
+  if(ScreenHeight > 480){
+    myDelegate.autoSizeScaleX = ScreenWidth/320;
+    myDelegate.autoSizeScaleY = ScreenHeight/568;
+  }else{
+    myDelegate.autoSizeScaleX = 1.0;
+    myDelegate.autoSizeScaleY = 1.0;
+  }
+}
+重写CGRectMake1方法
+UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake1(100, 100, 50, 50)];
+CG_INLINE CGRect//注意：这里的代码要放在.m文件最下面的位置
+CGRectMake1(CGFloat x, CGFloat y, CGFloat width, CGFloat height)
+{
+  AppDelegate *myDelegate = [[UIApplication sharedApplication] delegate];
+  CGRect rect;
+  rect.origin.x = x * myDelegate.autoSizeScaleX; rect.origin.y = y * myDelegate.autoSizeScaleY;
+  rect.size.width = width * myDelegate.autoSizeScaleX; rect.size.height = height * myDelegate.autoSizeScaleY;
+  return rect;
+}
+
+5、iphone的屏幕问题
+iphone6 plus View为 (540X960) 【1080px*1920px】
+iphone6 View为 (375X667) 【750px*1334px】
+iphone5的View为568（320X568），减去Nav(44)+任务栏(20),为504，【640px*1136px】
+iphone4s及View480（320X480），减去Nav+任务栏(20),，为416，【640px*960px】
+[UIScreen instancesRespondToSelector:@selector(currentMode)]
+AppDelegate.h中添加
+
+
+6、获得内容的高
+-(CGFloat) getTheHeight:(NSInteger)row
+{
+    CGFloat contentWidth = 280;  
+    // 设置字体
+    UIFont *font = [UIFont fontWithName:@"Arial" size:14];
+    QiuShi *qs =[self.list objectAtIndex:row];  
+    // 显示的内容 
+    NSString *content = qs.content;
+    // 计算出长宽
+    CGSize size = [content sizeWithFont:font constrainedToSize:CGSizeMake(contentWidth, 220) lineBreakMode:NSLineBreakByTruncatingTail];
+    //新方法参考http://blog.csdn.net/iunion/article/details/12185077
+//    [content boundingRectWithSize:CGSizeMake(contentWidth, 220) options:NSStringDrawingUsesLineFragmentOrigin attributes:nil context:nil];
+    CGFloat height;
+    if (qs.imageURL==nil) {
+       height = size.height+140;
+    }else
+    {
+       height = size.height+220;
+    }
+    // 返回需要的高度  
+    return height; 
+}
+
+7、PullingRefresh 使用
+a、协议PullingRefreshTableViewDelegate  头文件 #import "PullingRefreshTableView.h"
+b、定义 @property (retain,nonatomic) PullingRefreshTableView *tableView;
+c、viewDidLoad初始化
+    [self.view setBackgroundColor:[UIColor clearColor]];
+    CGRect bounds = self.view.bounds;
+    bounds.size.height -= 44.f*2;
+    self.tableView = [[PullingRefreshTableView alloc] initWithFrame:bounds pullingDelegate:self];
+    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _tableView.backgroundColor = [UIColor clearColor];
+    _tableView.dataSource = self;
+    _tableView.delegate = self;
+    [self.view addSubview:self.tableView];
+d、实现方法
+#pragma mark - PullingRefreshTableViewDelegate
+- (void)pullingTableViewDidStartRefreshing:(PullingRefreshTableView *)tableView{
+    NSLog(@"---------pullingTableViewDidStartRefreshing-------------");
+    self.refreshing = YES;
+    [self performSelector:@selector(loadData) withObject:nil afterDelay:1.f];
+}
+- (void)pullingTableViewDidStartLoading:(PullingRefreshTableView *)tableView{
+    NSLog(@"---------pullingTableViewDidStartLoading-------------");
+    [self performSelector:@selector(loadData) withObject:nil afterDelay:1.f];    
+}
+#pragma mark - Scroll
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    [self.tableView tableViewDidScroll:scrollView];
+}  
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+    [self.tableView tableViewDidEndDragging:scrollView];
+}
+e、调用入口
+ [self.tableView launchRefreshing];
+f、可用方法
+[self.tableView tableViewDidFinishedLoading];
+[self.tableView tableViewDidFinishedLoadingWithMessage:@"下面没有了.."];
+self.tableView.reachedTheEnd  = YES;
+[self.tableView reloadData];
+
+8、ASIHTTPRequest 使用
+a、协议ASIHTTPRequestDelegate  头文件#import "ASIHttpHeaders.h"
+b、使用
+    asiRequest = [ASIHTTPRequest requestWithURL:url];
+    [asiRequest setDelegate:self];
+    [asiRequest setDidFinishSelector:@selector(GetResult:)];
+    [asiRequest setDidFailSelector:@selector(GetErr:)];
+    [asiRequest startAsynchronous];
+-(void) GetErr:(ASIHTTPRequest *)request
+-(void) GetResult:(ASIHTTPRequest *)request｛
+    NSData *data =[request responseData];
+｝
+
+9、Touchjson使用
+a、头文件CJSONDeserializer.h
+b、使用
+    NSData *data =[request responseData];
+    NSDictionary *dictionary = [[CJSONDeserializer deserializer] deserializeAsDictionary:data error:nil];
+
+10、手工写登录表单
+- (UITableViewCell *)tableView:(UITableView *)tableview cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+        static NSString *identifier = @"_QiShiCELL";
+        UITableViewCell *cell =(UITableViewCell *) [tableview dequeueReusableCellWithIdentifier:identifier];
+        if (cell == nil){
+            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:identifier] autorelease];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            if (indexPath.row == 0) {
+               
+                [cell.textLabel setTextColor:[UIColor blackColor]];
+                [cell.textLabel setFont:[UIFont fontWithName:@"Arial" size:14]];
+                [cell.textLabel setText: @"用户名:"];
+                
+                username = [[UITextField alloc]initWithFrame:CGRectMake(90, 6, 140, 24)];
+                [username setBorderStyle:UITextBorderStyleNone];
+                [username setTextColor:[UIColor brownColor]];
+                [username setFont:[UIFont fontWithName:@"Arial" size:14]];
+                [username setPlaceholder:@"请输入用户名"];
+                [cell addSubview:username];
+                [username becomeFirstResponder];  //弹出键盘
+            }else if(indexPath.row == 1)
+            {
+                
+                [cell.textLabel setTextColor:[UIColor blackColor]];
+                [cell.textLabel setFont:[UIFont fontWithName:@"Arial" size:14]];
+                [cell.textLabel setText:  @"密   码:"];
+               
+                password = [[UITextField alloc]initWithFrame:CGRectMake(90, 6, 140, 24)];
+                [password setBorderStyle:UITextBorderStyleNone];
+                [password setPlaceholder:@"请输入密码"];
+                [password setTextColor:[UIColor brownColor]];
+                [password setFont:[UIFont fontWithName:@"Arial" size:14]];
+                [password setSecureTextEntry:YES];
+                [password setReturnKeyType:UIReturnKeyDone];
+                [cell addSubview:password];
+            }   
+           
+        }
+    return cell;
+}
+
+
+
+
+12.判断邮箱格式是否正确的代码：
+//利用正则表达式验证
+-(BOOL)isValidateEmail:(NSString *)email
+{
+NSString *emailRegex = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
+NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES%@",emailRegex];
+return [emailTest evaluateWithObject:email];
+}
+
+13.图片压缩
+用法：UIImage *yourImage= [self imageWithImageSimple:image scaledToSize:CGSizeMake(210.0, 210.0)];
+//压缩图片
+- (UIImage*)imageWithImageSimple:(UIImage*)image scaledToSize:(CGSize)newSize
+{
+// Create a graphics image context
+UIGraphicsBeginImageContext(newSize);
+// Tell the old image to draw in this newcontext, with the desired
+// new size
+[image drawInRect:CGRectMake(0,0,newSize.width,newSize.height)];
+// Get the new image from the context
+UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
+// End the context
+UIGraphicsEndImageContext();
+// Return the new image.
+return newImage;
+}
+
+14.亲测可用的图片上传代码
+- (IBAction)uploadButton:(id)sender {
+UIImage *image = [UIImage imageNamed:@"1.jpg"]; //图片名
+NSData *imageData = UIImageJPEGRepresentation(image,0.5);//压缩比例
+NSLog(@"字节数:%i",[imageData length]);
+// post url
+NSString *urlString = @"http://192.168.1.113:8090/text/UploadServlet";
+//服务器地址
+// setting up the request object now
+NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init] ;
+[request setURL:[NSURL URLWithString:urlString]];
+[request setHTTPMethod:@"POST"];
+//
+NSString *boundary = [NSString stringWithString:@"---------------------------14737809831466499882746641449"];
+NSString *contentType = [NSString stringWithFormat:@"multipart/form-data;boundary=%@",boundary];
+[request addValue:contentType forHTTPHeaderField: @"Content-Type"];
+//
+NSMutableData *body = [NSMutableData data];
+[body appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+[body appendData:[[NSString stringWithString:@"Content-Disposition:form-data; name=\"userfile\"; filename=\"2.png\"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]]; //上传上去的图片名字
+[body appendData:[[NSString stringWithString:@"Content-Type: application/octet-stream\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+[body appendData:[NSData dataWithData:imageData]];
+[body appendData:[[NSString stringWithFormat:@"\r\n--%@--\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+  [request setHTTPBody:body];
+// NSLog(@"1-body:%@",body);
+NSLog(@"2-request:%@",request);
+NSData *returnData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+NSString *returnString = [[NSString alloc] initWithData:returnData encoding:NSUTF8StringEncoding];
+NSLog(@"3-测试输出：%@",returnString);
+
+15.给imageView加载图片
+UIImage *myImage = [UIImage imageNamed:@"1.jpg"];
+   [imageView setImage:myImage];
+   [self.view addSubview:imageView];
+
+16.对图库的操作
+选择相册：
+UIImagePickerControllerSourceTypesourceType=UIImagePickerControllerSourceTypeCamera;
+   if (![UIImagePickerControllerisSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+       sourceType=UIImagePickerControllerSourceTypePhotoLibrary;
+   }
+   UIImagePickerController * picker = [[UIImagePickerControlleralloc]init];
+   picker.delegate = self;
+   picker.allowsEditing=YES;
+   picker.sourceType=sourceType;
+   [self presentModalViewController:picker animated:YES];
+选择完毕：
+ -(void)imagePickerController:(UIImagePickerController*)pickerdidFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+   [picker dismissModalViewControllerAnimated:YES];
+   UIImage * image=[info objectForKey:UIImagePickerControllerEditedImage];
+   [self performSelector:@selector(selectPic:) withObject:imageafterDelay:0.1];
+}
+ -(void)selectPic:(UIImage*)image
+{
+   NSLog(@"image%@",image); 
+   imageView = [[UIImageView alloc] initWithImage:image];
+   imageView.frame = CGRectMake(0, 0, image.size.width, image.size.height);
+[self.viewaddSubview:imageView];
+   [self performSelectorInBackground:@selector(detect:) withObject:nil];
+}
+detect为自己定义的方法，编辑选取照片后要实现的效果
+取消选择：
+ -(void)imagePickerControllerDIdCancel:(UIImagePickerController*)picker
+{
+   [picker dismissModalViewControllerAnimated:YES];
+}
+
+17.跳到下个View
+nextWebView = [[WEBViewController alloc] initWithNibName:@"WEBViewController" bundle:nil];
+[self presentModalViewController:nextWebView animated:YES];
+
+//创建一个UIBarButtonItem右边按钮
+UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"右边" style:UIBarButtonItemStyleDone target:self action:@selector(clickRightButton)];
+[self.navigationItem setRightBarButtonItem:rightButton];
+设置navigationBar隐藏
+self.navigationController.navigationBarHidden = YES;//
+iOS开发之UIlabel多行文字自动换行 （自动折行）
+UIView *footerView = [[UIView alloc]initWithFrame:CGRectMake(10, 100, 300, 180)];
+UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(10, 100, 300, 150)];
+label.text = @"Hello world! Hello world!Hello world! Hello world! Hello world! Hello world! Hello world! Hello world!Hello world! Hello world! Hello world! Hello world! Hello world! Helloworld!";
+//背景颜色为红色
+label.backgroundColor = [UIColor redColor];
+//设置字体颜色为白色
+label.textColor = [UIColor whiteColor];
+//文字居中显示
+label.textAlignment = UITextAlignmentCenter;
+//自动折行设置
+label.lineBreakMode = UILineBreakModeWordWrap;
+label.numberOfLines = 0;
+
+30.代码生成button
+CGRect frame = CGRectMake(0, 400, 72.0, 37.0);
+UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+button.frame = frame;
+[button setTitle:@"新添加的按钮" forState: UIControlStateNormal];
+button.backgroundColor = [UIColor clearColor];
+button.tag = 2000;
+[button addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
+[self.view addSubview:button];
+
+31.让某个控件在View的中心位置显示：
+（某个控件，比如label，View）label.center = self.view.center;
+
+32.好看的文字处理
+以tableView中cell的textLabel为例子：
+cell.backgroundColor = [UIColorscrollViewTexturedBackgroundColor];
+//设置文字的字体
+cell.textLabel.font = [UIFont fontWithName:@"AmericanTypewriter" size:100.0f];
+//设置文字的颜色
+cell.textLabel.textColor = [UIColor orangeColor];
+//设置文字的背景颜色
+cell.textLabel.shadowColor = [UIColor whiteColor];
+//设置文字的显示位置
+cell.textLabel.textAlignment = UITextAlignmentCenter;
+
+33. ———————-隐藏Status Bar—————————–
+读者可能知道一个简易的方法,那就是在程序的viewDidLoad中加入
+[[UIApplication sharedApplication]setStatusBarHidden:YES animated:NO];
+
+33. 更改AlertView背景 
+
+UIAlertView *theAlert = [[[UIAlertViewalloc] initWithTitle:@"Atention"
+                                                     message: @"I'm a Chinese!"
+                                                    delegate:nil 
+                                            cancelButtonTitle:@"Cancel" 
+                                            otherButtonTitles:@"Okay",nil] autorelease];
+   [theAlert show];
+   UIImage *theImage = [UIImageimageNamed:@"loveChina.png"];   
+   theImage = [theImage stretchableImageWithLeftCapWidth:0topCapHeight:0];
+   CGSize theSize = [theAlert frame].size;
+    UIGraphicsBeginImageContext(theSize);    
+   [theImage drawInRect:CGRectMake(5, 5, theSize.width-10, theSize.height-20)];//这个地方的大小要自己调整，以适应alertview的背景颜色的大小。
+   theImage = UIGraphicsGetImageFromCurrentImageContext();   
+UIGraphicsEndImageContext();
+   theAlert.layer.contents = (id)[theImage CGImage];
+
+34. 键盘透明
+textField.keyboardAppearance = UIKeyboardAppearanceAlert;
+
+状态栏的网络活动风火轮是否旋转
+[UIApplication sharedApplication].networkActivityIndicatorVisible，默认值是NO。
+
+35截取屏幕图片
+//创建一个基于位图的图形上下文并指定大小为CGSizeMake(200,400)
+UIGraphicsBeginImageContext(CGSizeMake(200,400)); 
+
+//renderInContext 呈现接受者及其子范围到指定的上下文
+[self.view.layer renderInContext:UIGraphicsGetCurrentContext()];
+    //返回一个基于当前图形上下文的图片
+ UIImage *aImage = UIGraphicsGetImageFromCurrentImageContext();
+  //移除栈顶的基于当前位图的图形上下文
+UIGraphicsEndImageContext();
+//以png格式返回指定图片的数据
+imageData = UIImagePNGRepresentation(aImage);
+
+36更改cell选中的背景
+    UIView *myview = [[UIView alloc] init];
+    myview.frame = CGRectMake(0, 0, 320, 47);
+    myview.backgroundColor = [UIColorcolorWithPatternImage:[UIImage imageNamed:@"0006.png"]];
+    cell.selectedBackgroundView = myview; 
+
+37显示图像:
+CGRect myImageRect = CGRectMake(0.0f, 0.0f, 320.0f, 109.0f); 
+UIImageView *myImage = [[UIImageView alloc] initWithFrame:myImageRect];
+[myImage setImage:[UIImage imageNamed:@"myImage.png"]]; 
+myImage.opaque = YES; //opaque是否透明
+[self.view addSubview:myImage];
+
+38.能让图片适应框的大小（没有确认）
+NSString*imagePath = [[NSBundle mainBundle] pathForResource:@"XcodeCrash"ofType:@"png"];    
+    UIImage *image = [[UIImage alloc]initWithContentsOfFile:imagePath];
+       UIImage *newImage= [image transformWidth:80.f height:240.f];
+    UIImageView *imageView = [[UIImageView alloc]initWithImage:newImage];
+        [newImagerelease];
+    [image release];
+    [self.view addSubview:imageView];
+
+39.实现点击图片进行跳转的代码：生成一个带有背景图片的button，给button绑定想要的事件！
+UIButton *imgButton=[[UIButton alloc]initWithFrame:CGRectMake(0, 0, 120, 120)];
+[imgButton setBackgroundImage:(UIImage *)[self.imgArray objectAtIndex:indexPath.row] forState:UIControlStateNormal];
+imgButton.tag=[indexPath row];
+[imgButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside]; 
+
+
+1、设置 ImagePicker 的大小
+ImagePicker 在 Popover Controller 总是以默认大小显示，设置 popoverContentSize 属性似乎无用。解决办法是将ImagePicker “包含”到一个定制的 ViewController 中，然后再 presentPopover 这个 ViewController ：
+UIViewController *containerController = [[UIViewController alloc] init];
+containerController.contentSizeForViewInPopover = CGSizeMake(600,self.view.frame.size.height);
+ [containerController.viewaddSubview:_imagePicker.view];
+_popController= [[UIPopoverController alloc] initWithContentViewController:containerController];
+CGPoint p=[self.view convertPoint:button.center
+      fromView:sender.superview];
+[_popController presentPopoverFromRect:(CGRect){p,CGSizeZero}
+      inView:self.view
+      permittedArrowDirections:UIPopoverArrowDirectionAny
+       animated:YES];
+[_imagePicker.view setFrame:containerController.view.frame];// 很重要
+注意，popover的宽度最多600。此外，_imagePicker 每次 presentPopoverFromRect 之前都必须 init一次，否则显示位置不正确。
+
+2、上传文件中文文件名乱码问题
+在iOS客户端将文件名用URL Encode编码，然后在服务端用URL Decode解码。
+客户端：
+NSStringEncodingenc=NSUTF8StringEncoding;
+[request setData:datawithFileName [filename stringByAddingPercentEscapesUsingEncoding:enc]
+     andContentType:@"application/octet-stream" forKey:key];
+服务端：
+String filename=request.getParameter(“upload_file”);
+filename=URLDecode.decode(s,”utf-8”);
+
+3、Mac 64 bit Device
+有时从SVN更新工程后，Scheme会显示为Mac 64 bit Device，并且不允许运行程序。这时只需要重新设置一下Target的DeploymentTarget就好（设置为模拟器或调试设备）。
+
+4、去除调试程序的NSLog
+编译参数Optimize Level根据不同的版本设置。例如对于Debug版本是None，对于Release版本是Fastest,Smallest。这样，我们可以根据这个参数来重新定义NSLog函数：
+#ifndef __OPTIMIZE__
+#define NSLog(...)NSLog(__VA_ARGS__)
+#else
+#define NSLog(...) {}
+#endif
+
+5、警告：no previous prototye for function
+根据c规范， 如果函数没有参数，使用void作为函数参数。
+函数声明应使用 “void functionA(void);”,而不能是”void functionA();”.
+
+6、数组排序
+方法一:
+- (NSComparisonResult)compare:(Person *)otherObject {
+    return [self.birthDatecompare:otherObject.birthDate];
+}
+NSArray *sortedArray;
+sortedArray = [drinkDetails sortedArrayUsingSelector:@selector(compare:)]; 
+方法二： 
+NSSortDescriptor *sortDescriptor;
+sortDescriptor = [[[NSSortDescriptor alloc]initWithKey:@"birthDate"
+                                             ascending:YES] autorelease];
+NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+NSArray *sortedArray;
+sortedArray = [drinkDetails sortedArrayUsingDescriptors:sortDescriptors];
+方法三（ 10.6+）:
+NSArray *sortedArray;
+sortedArray = [drinkDetails sortedArrayUsingComparator:^(id a, id b) {
+    NSDate *first =[(Person*)a birthDate];
+    NSDate *second =[(Person*)b birthDate];
+    return [firstcompare:second];
+}];
+
+7、Xcode 4的build目录在哪里？
+Xcode 4 做了许多改变。你将不能找到build目录，你也无法找到Products文件组。那么它把项目编译后生成的可执行文件放在哪里了呢？答案就是“{USERNAME}/Library/Developer/Xcode/DerivedData/{PROJECT_NAME_AND_RANDOM_CRAP}/Build/Products/{BUILD_TYPE}/{PROJECT_NAME}.app”目录。
+
+8、警告：no rule to process file
+Xcode试图侦测每一种文件的类型。当它认为文件属于“源文件”类型（比如.js文件），总是试图将它加到 Compile Sources中并试图编译。解决这个警告的办法是，把这类文件从Build Phases的 Compile Sources移到 Copy Bundle Resources中。
+
+9、警告：'initWithFrame:reuseIdentifier:'is deprecated
+该方法在后续版本中将被抛弃。请使用
+-  initWithStyle:reuseIdentifier:
+
+10、itms-services不工作
+itms-services 被apple/iphone识别为一个特殊的字眼，它会校验provisioning profile中指定的证书并进行安装。
+在安装这个.ipa文件前，要校验profisioning profile，这会连接到 "ax.init.itunes.apple.com"和 "ocsp.apple.com"。
+如果你处于intranet中，请检查是否可访问上述地址。如果不能，你将无法使用OTA来安装应用程序。要求iOS 4.0以上。
+注：上述地址不能访问并不会影响安装。但是iOS会在运行时通过上述地址检查证书是否合法，如果安装是合法的，iOS会缓存检查结果（7天）。
+
+11、无法调试设备“Error launching remote program: failed to get the task forprocess 6405.”
+ad-hoc Profile不支持调试。改为development profile。
+
+12、OTA无法下载，提示“无法下载应用程序”
+.plist文件中的 bundle-identifier写错了(或者包含中文字符)，比如：
+<key>bundle-identifier</key>
+<string>com.xxx.--APN--</string>
+其中的com.xxx.—APN—中包含中文（“--”）,应改为英文。
+或者签名证书是无效的。请在Orgnizer中检测签名证书。
+
+12、ASIHTTPRequest中经常出现EXEC_BAD
+使用ASIHTTPRequest进行异步请求时，经常出现程序崩溃。尤其在是请求过程中（未Finished），如果你切换了视图的时候。因为是异步请求，request对象可能在任何时候调用delegate（ViewController），而此时ViewController却可能已经释放了。因为UIKit随时会释放当前不显示的ViewController。如果你切换了ViewController，那么那个被隐藏的ViewController随时会被释放。如果request回调ViewController的delegate方法时，而那个ViewController正好被UIKit给释放，则会导致EXEC_BAD。在官方文档中也提到：Requests don’t retain their delegates, so if there’s a chance your delegatemay be deallocated while your request is running, it is vital that you clearthe request’s delegate properties. In most circumstances, if your delegate isgoing to be deallocated, you probably also want to cancel request, since you nolonger care about the request’s status
+因此在使用ASIHTTPRequest进行异步编程时，我们要自己清空request的delegate属性。在delegate(ViewController)的dealloc方法中你应该： 
+[request clearDelegatesAndCancel];
+[request release];
+当然，request不能是临时变量，而应当是一个retained的成员对象（或者属性），否则你无法在dealloc方法中clearDelegatesAndCancel。
+
+13、Assertion failure in -[UIActionSheet showInView:]
+在主线程中打开action sheet：
+ [selfperformSelectorOnMainThread:@selector(showActionSheet) withObject:nilwaitUntilDone:NO];
+showActionSheet方法：
+-(void) showActionSheet
+{ sheet = [[UIActionSheet alloc] initWithTitle:@"This is my ActionSheet!" delegate:self cancelButtonTitle:@"OK"destructiveButtonTitle:@"Delete Message!" otherButtonTitles:@"Option1", @"Option 2", @"Option 3", nil];
+[sheet showInView:self.view];
+}
+
+14、RegexKitLite编译错误
+编译时提示如下错误：
+"_uregex_find", referenced from:       _rkl_search in RegexKitLite.o
+……
+在Build Settgins的Other Linke Flag中加入
+-licucore
+
+15、Archive时遇到“ResourceRules.plist:cannot read resources”错误
+在build settings中找到Code Signing Resource Rules Path，填入$(SDKROOT)/ResourceRules.plist
+
+16、使用ZombieEnable解决EXEC_BAD_EXCESS错误
+这个错误是向一个release对象发送消息导致的。可以通过开启ZombieEnable参数来查找真正的问题。
+Edit Scheme，选择Run …Debug，打开Arguments组，在Environment Variables中添加一个参数：
+运行程序，当出现EXEC_BAD_EXCESS错误时，控制台中会输出具体出错的信息，比如：
+*** -[ITSMTicketCell release]: message sent to deallocated instance0x897e920
+直接指明了是由于某个对象在被释放之后，你发送了一条消息给它。
+
+17、 关于Xcode4无法调试2代代老设备的问题
+升级到Xcode4以后，你会发现许多程序无法在2代设备（有些3代设备，比如iTouch 3实际上仍然是2代的硬件）上运行了，并且Xcode4仅仅“Running…”就直接“Finished…”了，无论是Xcode控制台还是设备日志中，都没有任何提示。
+注意：2代和3代的区别在于cpu架构。2代设备使用ARMv6架构cpu，3代设备使用ARMv7架构cpu。 iPhone 2G/3G,iPod 1G/2G属于ARMv6架构（2代），iPhone3GS/4, iPod 3G，iPad属于ARMv7架构（3代）。
+stackoverflow上有关于这个的帖子，其中shapecatcher的答案是最准确的：
+http://stackoverflow.com/questions/6378228/switching-from-xcode3-to-xcode4-cant-load-programs-onto-older-ipod-touch
+1、打开Target的Build Settings，找到Architectures选项，将其从“$(ARCHS_STANDARD_32_BIT)”修改为“armv6$(ARCHS_STANDARD_32_BIT)”。注意大小写是敏感的。“$(ARCHS_STANDARD_32_BIT)”是一个变量，实际上等同于armv7。
+2、Base SDK不需要改变，仍然是Lastest iOS。
+3、打开Target的info，找到Required device capabilities，将下面的armv7删除。这个选项是Xcode4自己添加在工程中的默认设置，如果不去掉它，第1步－第2步的工作是无法生效的。
+
+18、“Avalid provisioning profile for this device was not found.”
+在你的开发证书中增加该设备的UDID。
+
+19、将设备添加到 portal
+连接设备，打开Orgnizer。在设备列表中选中设备，点击右边窗口左下角的“Add to Portal”按钮。或者在设备列的设备上右击，选择“AddDevice to Provisioning Portal”。
+
+20、renew profile
+打开Orgnizer，在LIBRARY中选择Provisioning Profiles。在右边窗口选择要renew的profile，点击右下角的“Refresh”按钮。输入Portal的密码，profile将被renew。
+
+21、renew签名证书及设备激活文档
+从portal移除过期的签名证书
+重新制作开发证书和发布证书
+删除开发和部署所用的激活文档(provisioningprofiles）
+使用新的证书重新制作用于开发和部署的Provisioningprofiles
+从钥匙串中删除老的证书
+在XcodeOrganizer中安装新的provisioning profiles
+完成
+
+22、解决 messagesent to deallocated instance 0x52cc690 错误
+当试图对某个对象进行赋值操作的时候出现这个错误，如：
+tfContent.text=bodyText;
+此时，你可以打开NSZombieEnable选项，则console会有如下输出：
+***-[CFString _isNaturallyRTL]: message sent to deallocated instance 0x52cc690
+说明_isNaturallyRTL消息被发送给了一个已经释放了的对象。从上面的语句看，可能是这两个对象：tfContent、bodyText。
+你可以打印tfContent或者bodyText的内存地址，看看到底是哪个对象已经被释放掉了：
+NSLog(@"tfContent:0x%x",(int) tfContent);
+NSLog(@"bodytext:0x%x",(int) bodyText);
+结果表明是bodyText被提前释放：
+tfContent: 0x52cf160
+bodytext: 0x52cc690
+在适当的地方对bodyText进行retain，问题解决。
+
+23、 putpkt:write failed: Broken pipe错误
+重启设备。
+
+24、.hfile not found
+实际上该.h文件并没有被包含进target。选择对应.m文件，点击“ShowUtilities”按钮（在工具条的右端），在Utilities中找到Target Membership，将Target前面的勾去掉，然后再重新勾上。即相当于将该.m文件重新加入target的Buildphase中。
+
+25、 Xcode 4：如何将for iPhone的xib转变为for iPad
+在Xcode 3.x中，将xib从iPhone版转变为iPad版，通过Create iPad Version菜单。
+但在Xcode 4.x中，这个菜单找不到了。通过一番摸索，笔者发现可以用如下方法将xib转换为iPad版本。
+1、修改xib源文件
+xib文件其实是一个xml文件。在Project Navigator中，在xib文件上右键，选择“Open As -> Source Code”，即可以源代码方式查看xib文件，找到"com.apple.InterfaceBuilder3.CocoaTouch.XIB"一行，将其改为 "com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB"，即增加了".iPad"。
+按下⌘+F，打开搜索栏，点击Replace菜单，将模式改变替换模式。将xib文件中所有"IBCocoaTouchFramework"用 "IBIPadFramework"替换。
+按下⌘+S，保存修改。
+2、修改xib的视图尺寸
+在xib文件上右键，选择“Open As -> Interface Builder – iOS”，用IB模式打开。
+选择xib文件中的根视图（UIView），在属性面板中找到Size选项，将其改为Full iPad Screen。
+现在，你可以有一个iPad版本的xib了。
+
+26、icon dimensions (0 x 0) don't meet the size requirements.
+打开Project的BuildSettings，找到Compress PNG Files，将值设置为No。
+或者：
+选中该png文件，在FileInspector面板中，找到File Type，将其由 "PNG" 修改为 "Icon".
+
+27、警告： noprevious prototype for function
+打开Target->BuildSettings，搜索prototype，将Missing Function ProtoTypes改为NO。
+
+28、CorePlot编译时出现 错误“Command /Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/clangfailed with exit code 1”
+请将Scheme 从 iOS Device 改为 iPhone 5.0 Simulator。或者将Compiler for C/C++ 改为 LLVM GCC4.2。同时，Core Plot 1.0 不再支持老的 armv6 CPU。
+
+29、使用CABasicAnimation改变UIView的alpha值无效
+UIView的alpha值，在CALayer中其实是"opacity"，请使用opcity作为keyPath。
+
+30、CorePlost：定制 Axis Label 后，Tick Mark 不显示。
+设置Axis 的majorTickLocations 为你想显示 tick mark 的位置。
+NSMutableArray*customTickLocations=[[[NSMutableArray alloc]init]autorelease];
+for(int i=0;i<10;i++){
+［customTickLocationsaddObject:[NSNumber  numberWithInt:i]];
+}
+xAxis.majorTickLocations=[NSSetsetWithArray:customTickLocations];
+
+31、定制的UITableViewCell， indentationLevel不能生效
+需要在定制的UITableViewCell中实现layoutSubviews方法。
+ - (void)layoutSubviews
+{
+    [super layoutSubviews];
+    float indentPoints = self.indentationLevel *self.indentationWidth;
+    for(UIView *view in self.subviews){
+        view.frame = CGRectMake(
+                               view.frame.origin.x+indentPoints,
+                               view.frame.origin.y,
+                               view.frame.size.width,
+                               view.frame.size.height
+                               );
+    }
+}
+
+32、UIImage+Scale缩放图片
+UIImage可以加载图片，但是我们想要得到一张缩小或放大的图片，利用UIImage不能做到，下面我们添加一个UIImage的分类，用来实现UIImage中图片的放大和缩小。
+首先，创建一个UIImage+Scale类。
+然后，实现该类的方法：
+#import <UIKit/UIKit.h>
+@interface UIImage (scale)
+-(UIImage*)scaleToSize:(CGSize)size;
+@end
+#import "UIImage+Scale.h"
+@implementation UIImage (scale)
+-(UIImage*)scaleToSize:(CGSize)size
+{
+    // 创建一个bitmap的context
+    // 并把它设置成为当前正在使用的context
+    UIGraphicsBeginImageContext(size);
+    // 绘制改变大小的图片
+    [self drawInRect:CGRectMake(0, 0, size.width,size.height)];
+    // 从当前context中创建一个改变大小后的图片
+    UIImage* scaledImage = UIGraphicsGetImageFromCurrentImageContext();
+    // 使当前的context出堆栈
+    UIGraphicsEndImageContext();
+    // 返回新的改变大小后的图片
+    return scaledImage;
+}
+@end
+最后，就是该类的使用了：
+#import "UIImage+Scale.h"
+ [[UIImage imageNamed:”p.png”] scaleToSize:CGSizeMake(252.0f,192.0f)];
+
+33、Coreplot：在散点图中，legendTitleForBarPlot不会被调用
+legendTitleForBarPlot是柱状图的数据源方法，在散点图的数据源委托CPTScatterPlotDataSource 中没有该方法。要定制 legend 的标题，唯一的方法是指定plot 的 title 属性。如果 title 为空，则使用 identifier 属性。
+
+34、 setHidesBackButton不能隐藏返回按钮
+将setHidesBackButton:animated:移到 viewDidAppear: 方法，而不要在 viewWillAppear:或者viewDidLoad方法中。
+
+35、cannotfind protocol declaration NSURLConnectionDelegate
+iOS5开始NSURLConnectionDelegate被deprecated，在NSURLConnection.h中，这些方法变成了非正式协议。同时复制了一份这些方法的拷贝到正式协议NSURLConnectionDataDelegate中。你可以直接将类接口声明的<NSURLConnectionDelegate>删除，并实现这些方法，从而使用非正式协议。
+
+36、警告“Property'ssynthesized getter follows Cocoa naming convention for returning 'owned'objects”
+要synthesized的属性中，属性名不得以“new”开头，比如“newFeature”。
+
+37、 Implicit declaration of function 'xxx' is invalidin C99
+这是Xcode的一个bug。当编译器第一次看见函数定义，却未找到该函数原型时会报此错误。解决方法是在函数定义之前加入函数原型声明。注意，把函数原型声明语句插入到类的interface声明内（.h头文件），或者的类implementation语句之前（.m文件）。
+
+38、-[UIImageresizableImageWithCapInsets:]: unrecognized selector
+这个方法是iOS5中新增的，在iOS4中请使用stretchableImageWithLeftCapWidth:topCapHeight:方法。代码：
+if([img respondsToSelector:@selector(resizableImageWithCapInsets:)])
+        {//for iOS 5+
+            img=[srcImg resizableImageWithCapInsets:UIEdgeInsetsMake(0, 6, 0, 6)];
+        }else{//iOS 4 compatibility
+           img=[srcImg stretchableImageWithLeftCapWidth:6 topCapHeight:0];
+        }
+
+39、计算指定字体的字符串Size
+CGSizemaximumLabelSize = CGSizeMake(250 ,MAXFLOAT);
+CGSizeexpectedLabelSize = [LABEL.text sizeWithFont:[UIFontsystemFontOfSize:UILabel.font]
+ constrainedToSize:maximumLabelSize
+ lineBreakMode:UILineBreakModeWordWrap];
+expectedLabelSize即根据字体、最大size限制、换行模式计算出来的实际Size。
+
+40、ASIHTTPRequestclearDelegateAndCancel方法导致程序崩溃
+ASIHTTPRequest并不会持有delegate对象，当你取消一个request或delegate释放后，为了避免调用释放了的delegate方法，我们应当取消request。但是clearDelegateAndCancel方法会导致一个调用deallocated对象错误并崩溃。
+为了避免这个，你应当(针对1.8.1及之前的版本)：
+在delegate中持有ASIHTTPRequest对象；
+当释放delegate或取消request时，使用不要调用clearDelegateAndCancel而改用“[requestrelease],request=nil;”。
+
+41、 Castof 'int' to 'CAMediaTimingFunction *' is disallowed with ARC
+以下代码导致上述错误：
+transition.timingFunction= UIViewAnimationCurveEaseInOut;
+事实上，就算在MRC(手动内存管理)中，这句代码也是不正确的。之所以能够不出错，是因为UIViewAnimationCurveEaseInOut通常为0，转换过来就变成了nil。实际上这句代码应该修改为：
+ [animationsetTimingFunction:[CAMediaTimingFunctionfunctionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
+
+ 42、 警告:Multiplebuild commands for output file
+target引用了名字重复的资源
+找到当前的target，展开之后，找到CopyBundle Resources栏目，然后在里面找到重复名字的资源，删除不要的那个即可
+
+43、签名错误：Provisioningprofile can't be found
+在Xcode中当你在更新了你得证书而再重新编译你的程序，真机调试一直会出现Code Sign error: Provisioning profile ‘XXXX’ can't be found是不是会另你很恼火。下面说说解决方法，让你很好的解决这个问题。
+ 1.关闭你的项目，找到项目文件XXXX.xcodeproj，在文件上点击右键，选择“显示包内容”（ShowPackage Contents）。会新打开一个Finder。注：其实XXXX.xcodeproj就是一个文件夹，这里新打开的一个Finder里面的三个文件就是该XXXX.xcodeproj文件夹里面的文件。
+2.在新打开的Finder中找到project.pbxproj，并且打开。在这之中找到你之前的证书的编码信息。我之前报的错误信息是：
+CodeSign error: Provisioning profile '37D44E7F-0339-4277-9A82-C146A944CD46'，所以我用查找的方式找到了所有包括37D44E7F-0339-4277-9A82-C146A944CD46的行，并且删除。
+3.保存，重新启动你的项目，再编译。就OK了。
+
+44、 升级至Xcode 4.6 后导致 arc4random_uniform 不可用
+当项目升级至Xcode4.6后出现编译错误：
+Useof undeclared identifier 'arc4random_uniform'; did you mean 'arc4random_stir'?
+似乎SDK 6.1 并不支持'arc4random_uniform'，换成'arc4random'后问题解决。
+
+45、升级Xcode4.6后，出现编译错误：Undefinedsymbols for architecture x86_64: "_OBJC_CLASS_$_NSMutableOrderedSet"
+在build settings 中，设置 "Implicitly link Objective-C Runtime Support" 为NO，问题解决。
+
+46、升级Xcode4.6后，出现警告：function'sleep' is invalid in C99
+#import<unistd.h> 后解决。升级Xcode4.6后，许多头文件默认并没有被自动导入，比如 stdlib.h 和 unistd.h。
+
+47、编译错误： autolayout on ios versions prior to 6.0
+在Xcode 4.6 中编译Target 4.0的app时出现此问题（真机调试，设备为3GS，升级至iOS 6.1.3）。找到报错的.xib 文件，在Document面板中j将“UseAutolayout”（见下图）禁用。
+
+48、如何设置按钮TitleLabel 的文字对齐？
+设置contentHorizontalAlignment 属性:
+emailBtn.contentHorizontalAlignment= UIControlContentHorizontalAlignmentLeft;
+或者用contentEdgeInset 调整文字边距（0表示不对齐）：
+emailBtn.contentEdgeInsets= UIEdgeInsetsMake(0, 10, 0, 0);
+或者二者结合同时使用。
+
+49、错误：errorDomain=UA_ASIHTTPRequestErrorDomain Code=8 "Failed to move file from
+Theerror happens after the file is downloaded; but before the file is successfullymoved from the tmp location to the Cache location
+错误发生在文件下载到临时文件，但还未移动到documents目录之前（可以用iExplorer查看到临时文件的存在）。
+使用“[requestsetShouldAttemptPersistentConnection:NO];”解决此问题。
+
+50、编译错误：“hasbeen modified since the precompiled header was built”
+  预编译头的时候文件被修改。Clean一下再重新编译。
+
+51、错误Could not change excutable permissions on the application
+无法在iPhone上以同一个 AppID 安装两个不同的应用程序。一般是在Xcode 中执行 Project-->Profile命令时出现问题。因为一般真机调试时会在iPhone上装一个debug 应用程序，执行 Project-->Profile 后又会向iPhone上再次安装这个程序，两个程序的 AppID自然是相同的，于是出现上述错误。解决办法：先删除iPhone上的那个程序，再执行Project-->Profile 命令。
+
+52、Instruments错误：Targetfaild to run，如下图所示。
+点击菜单栏Scheme 的左下角，选择“Edit Scheme...”，在弹出窗口左侧边栏选中“Profile xxx.app”，将其“BuildConfiguration”从“Release”修改为 “Debug”。
+
+53、查看指针所指向的对象
+如果知道地址，可以用GDB命令打印该地址所代表的对象，例如：
+ po 0x1fba2e20
+如果该指针不是一个对象，用:
+p0x1fba2e20
+
+54、Xcode 打包时 skip install的问题
+总结：在自身工程里面需要将skipinstall 设置为NO, 在引入其他静态库文件的工程中skip install 设置为YES，否则在 Orgnizer 中无法发布你的程序。
+-主App是需要部署的，所以不要将Skip Install设为YES, 只需要改依赖项目。
+
+55、错误： Pushinga navigation controller is not supported
+SDK不允许直接在一个 NavigationController 中 push 一个 NavigationController。你可以用这句代码代替：
+[self.navigationControllerpushViewController:nc.topViewController animated:YES];
+
+56、为什么当用户点击Tab bar 上的按钮，总是会显示所选 NavigationController 的 rootViewController?
+你可以为TabBarController 指定一个delegate 属性，并在 delegate 对象中实现 UITabBarControllerDelegate 委托：
+#pragma mark TabBarController Delegate
+- (BOOL)tabBarController:(UITabBarController *)tabBarControllershouldSelectViewController:(UIViewController *)viewController {
+    UIViewController *tbSelectedController= tabBarController.selectedViewController;
+    if ([tbSelectedController isEqual:viewController]) {
+        return NO;
+    }
+    return YES;
+}
+
+57、使用setTitle 不能刷新 NavigationBar 的标题文本
+有时候使用ViewController的 setTitle 方法并不能刷新 NavigationBar 的 title文本。极大的可能是你使用类似的代码定制了 titleView：
+UILabel* label = [[[UILabel alloc] init] autorelease];
+label.backgroundColor=[UIColor clearColor];
+label.text = self.title;
+label.font = [UIFont systemFontOfSize: 20];
+……
+[self.navigationItem setTitleView: label];
+如果这样，你需要用同样的代码重新定制titleView，才能刷新 NavigationBar title。或者，使用默认的 TitleView 而不要去定制它。
+
+58、 nested push animation can result in corrupted navigation bar……
+如果你在代码中连续多次（两次以上）pushViewController，会出现以上信息，这既不是错误也不少警告，只是控制台输出的信息，但它会导致一些潜在的问题，比如NavigationController 的栈错误（比如用户有时候必须连按两次 backButton 才能返回上级视图）。往往还会伴随有如下信息的输出：
+Unbalancedcalls to begin/end appearance transitions <FirstViewController: 0x2a2c00>
+所谓连续多次，是指至少有一次push 是不经过用户交互而直接代码调用的。例如，当用户点击一个 TableViewCell，弹出一个 ViewController，然后在这个ViewController 的 viewDidLoad 方法或 viewWillAppear 方法中用代码 Push 另一个 ViewController。这第二次push 并不是由用户动作而是由代码触发的，因此会导致上述问题。
+解决办法是，在第二次push 时，将 animated 参数设置为 NO。
+
+59、真机可以执行，模拟器不行
+有时候出现模拟器不能调试的情况，程序一运行就退出，而且模拟器似乎“卡死”掉了，只出现一个黑黑的窗口，按Home键也没有作用。但是在真机上程序却可以运行。这个问题的原因未知，但有一个解决方式是：在另一个工程中打开模拟器，然后在模拟器中把有问题的程序删除即可。
+
+60、警告“numeration not handledin switch”
+新的Apple LLVM compiler 4.0中，会对 switch 变量进行检查，如果该变量为枚举类型，则需要处理所有的枚举值，你可以添加一个 default:break;语句表示所有未列举的枚举值已处理。或者将编译选项"Check switch statements"设置为NO。也可以用下列宏忽略switch 检查:
+#pragmaclang diagnostic push
+#pragmaclang diagnostic ignored "-Wswitch"
+     ...<switchstatment>...
+#pragmaclang diagnostic pop
+
+61、警告“addexplicit braces to avoid dangling else”
+所谓“危险的else”是类似这样的代码：
+if(a== 10)
+printf("TEN");
+else
+printf("NOT TEN");
+a = 100;
+编译器认为你的else 子句导致语义不清，你到底是什么意思？是无论 a 是否等于10 ， if 执行完之后都要将 a 赋值为100，还是只想在 else 子句(即 a 不等于10 的时候)中将 a 赋值为 100？
+如果是前者，正确的写法应该是：
+if(a== 10) {
+printf("TEN");
+}else{
+printf("NOT TEN");
+}
+a= 100;
+如果是后者，正确的写法应该是：
+if(a== 10) {
+printf("TEN");
+}else{
+printf("NOT TEN");
+a = 100;
+}
+当然，对于c/c++/java 编译器来说，这只是一个小问题，并不会导致无法编译。编译器实际上是倾向于前者的，它自动按第一种情况处理。但它会警告你这是一种不好的代码风格，你可以用#pragma clang diagnostic ignored "-Wswitch" 宏忽略该警告，或者将编译选项 MissingBraces and Parentheses 设置为 NO。
+
+62、iPad模拟器不显示 Home 键
+从Xcode 4.3 开始，为了获得更大的用户可用空间，iPad 模拟器不显示 Home 键。 你可以通过菜单“ 硬件 > 首页”或者快捷键⇧⌘H 来代替 Home 键。
+
+63、Novisible @interface for 'NSURL' declares the selector 'query'
+iOS6 中，该方法被抛弃，请用 NSURL+Parameters 替代。
+
+64、certificateidentity 'iphone distribution' appears more than once
+这是证书重复的错误，需要将钥匙串里重复的证书删掉编译才能通过。但是，如果你重启Xcode ，会发现之前删除的证书又回来了。但当重新启动Xcode时，Xcode里的证书会被导进钥匙串，所以仅仅是删除钥匙串中重复证书是无效的。
+相信 许多同学对 Xcode 的这个 Bug 深恶痛绝了，但除了反复地（但是徒劳地）从钥匙串中删除证书，也没有别的办法了。其实，也不能光怪 Xcode，而是跟”iPhone 配置使用工具“也有一定的关系。
+Xcode中的这些“残留”证书不以常规的形式存在。如果你安装了“iPhone 配置实用工具”，这些证书实际上存在于/Users/km-cn/Library/MobileDevice/Applications/目录下的.app 文件中，这些.app 实际上是 “iPhone配置实用工具”——“应用程序”中的所导入的 app。你可以用Finder ——“显示包内容”来查看.app 。其中一个名叫“embedded.mobileprovision”的文件，就是“残留”的重复证书。你可以逐一删除这些 .app，也可以干脆把该目录下的所有.app 都删除（反正只要项目文件存在，你随时可以编译出这些 .app并导入到“iPhone 配置实用工具”中）。最后，还要将 Orgnizer 中的重复证书也删除，然后重启Xcode。
+
+65、Application Identifier 'com. ydtf.*' which doesn't match the current setting'com.ydtf.dlt'
+如你所见，这两个Application ID 绝对是匹配的（*表示通配符）。但这个莫名的错误会导致你始终不能编译。这绝对是 Xcode 的另一个 Bug，先将 CodeSigning 修改为 Don't Code Sign，Build，然后再修改回正确的签名 Build。
+
+66、Theidentity used to sign the executable is no longer valid.
+由于前面的签名问题导致不能Archive。解决方式见问题 65。
+
+67、在iPad 中使用 presentModalViewController 设置弹出窗口的大小
+TestViewController*testVC = [[TestViewController alloc] initWithNibName:@"TestViewController"bundle:nil];
+    testVC.modalPresentationStyle= UIModalPresentationFormSheet;
+    testVC.modalTransitionStyle= UIModalTransitionStyleCrossDissolve;
+    [selfpresentModalViewController:testVC animated:YES];
+    testVC.view.superview.frame= CGRectMake(0, 0, 649, 397);//it's important to do this afterpresentModalViewController
+   testVC.view.superview.center = self.view.center;
+注意：//it'simportant to do this after presentModalViewController。即一定要在[selfpresentModalViewController:testVC animated:YES];之后设置frame的大小！
+
+68、在iPad 中定制 ActionSheet  的按钮和Popover 箭头方向。
+ActionSheet在 iPad 上以Popover的方式显示。默认不会显示cancelButton（SDK用Popover之外的区域代替cancelButton，用户只要点击Popover之外的区域就等同点击取消按钮）。如果你这样init一个ActionSheet：
+UIActionSheet* sheet=[[UIActionSheet alloc]initWithTitle:nil
+                                                   delegate:self
+                                          cancelButtonTitle:@"cancel"
+                                     destructiveButtonTitle:@"ok"
+                                          otherButtonTitles:nil];
+则最终只有红色的destructiveButton 会显示。
+如果你非要显示cancelButton，则可以这样干：
+UIActionSheet* sheet=[[UIActionSheet alloc]initWithTitle:nil
+                                                   delegate:self
+                                          cancelButtonTitle:nil
+                                     destructiveButtonTitle:nil
+                                          otherButtonTitles:@"cancel",@"ok",nil];
+//    sheet.cancelButtonIndex=0;
+sheet.destructiveButtonIndex=1;
+指定destructiveButtonIndex之后，该按钮被显示为红色。
+但千万不要指定cancelButtonIndex，因为在iPad上cancelButton会被移除。
+在iPad中，SDK没有提供可以修改 actionSheet 的箭头方向的API，系统自动判断箭头显示的方向。但我们可以利用showFromRect的第1个参数来改变箭头的方向:
+CGRect r=sender.bounds;
+    r.size.width=2*self.view.bounds.size.width;
+    r.origin.x=-self.view.bounds.size.width+sender.bounds.size.width/2+sender.frame.origin.x;
+    [sheet showFromRect:r inView:sender animated:YES];
+这样就将原来的左箭头，换成了上箭头。
+其实iOS 在判断 actionSheet 弹出方向时的逻辑很简单，哪边有“足够”的空间，它就往哪边弹出。当我们利用showFromRect的第1个参数将3个方向都“堵死”后，它就只能老老实实地从我们想要的方向弹出了。
+
+69、在 ASINetworkQueue 中 setShowAccurateProgress=YES 不起作用
+在 networkQueue.showAccurateProgress= YES之前加入 request.showAccurateProgress= YES ，否则showAccurateProgress 不会生效。示例代码：
+equest.showAccurateProgress=YES;
+networkQueue.showAccurateProgress=YES;
+[networkQueue setSuspended:YES];
+[networkQueue addOperation:request];
+networkQueue.uploadProgressDelegate=self;
+[networkQueue go];
+此外，由于 CFNework 中的一个 Bug,对于小于128K的数据，无法跟踪其上传/下载的精确进度。
+
+70、如何设置 UIWebView 背景色为透明？
+在IB中设置 UIWebView 的 Background 属性为 Clear Color 并不能使其背景透明。要达到这个目的，你需要使用以下两句：
+[webView setBackgroundColor:[UIColor clearColor]];
+[webView setOpaque:NO];
+
+71、如何让UIWebView的大小符合HTML的内容？
+在 iOS 5中，这很简单，设置 webview 的委托，然后在委托中实现didFinishLoad:方法：
+- (void)webViewDidFinishLoad:(UIWebView *)webView{
+    CGSize size=webView.scrollView.contentSize;//iOS 5+
+    webView.bounds=CGRectMake(0,0,size.width,size.height);
+}
+
+72、窗口中有多个Responder，如何快速释放键盘
+[[UIApplication sharedApplication] sendAction:@selector(resignFirstResponder) to:nil from:nil forEvent:nil];
+这样，可以一次性让所有Responder 的失去焦点。
+
+73、如何让 UIWebView 能通过“捏合”手势进行缩放？
+使用如下代码：
+webview=[[UIWebView alloc]init];
+    webview.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+    webview.scalesPageToFit=YES;
+    webview.multipleTouchEnabled=YES;
+    webview.userInteractionEnabled=YES;
+
+74、Undefined symbols:_kCGImageSourceShouldCache、_CGImageSourceCreateWithData、_CGImageSourceCreateImageAtIndex
+没有导入 ImageIO.framework。
+
+75、 expectedmethod to read dictionary element not found on object of type nsdictionary
+SDK 6.0 开始对字典增加了“下标”索引，即通过 dictionary[@"key"] 的方式检索字典中的对象。但在 SDK 5.0 中，这是非法的。你可以在项目中新建一个头文件 NSObject+subscripts.h 来解决这个问题 ，内容如下：
+#if __IPHONE_OS_VERSION_MAX_ALLOWED < 60000
+@interface NSDictionary(subscripts)
+- (id)objectForKeyedSubscript:(id)key;
+@end
+@interface NSMutableDictionary(subscripts)
+- (void)setObject:(id)obj forKeyedSubscript:(id <NSCopying>)key;
+@end
+@interface NSArray(subscripts)
+- (id)objectAtIndexedSubscript:(NSUInteger)idx;
+@end
+@interface NSMutableArray(subscripts)
+- (void)setObject:(id)obj atIndexedSubscript:(NSUInteger)idx;
+@end
+#endif
+ 
+76、错误：-[MKNetworkEngine freezeOperations]: message sent to deallocated instance0x1efd4750
+这是一个内存管理错误。MKNetwork 框架支持 ARC，本来不应该出现内存管理问题，但由于 MKNetwork 中的一些 Bug，导致在 MKNetworkEngine 不被设置为 strong 属性时出现该问题。建议 MKNetworkEngine 对象设置为 ViewController 的 strong 属性。
+ 
+77、UIImagePickerControllerSourceTypeSavedPhotosAlbum和 UIImagePickerControllerSourceTypePhotoLibrary的区别
+UIImagePickerControllerSourceTypePhotoLibrary 表示整个照片库，允许用户选择所有的相册（包括相机胶卷），而UIImagePickerControllerSourceTypeSavedPhotosAlbum仅包括相机胶卷。
+
+78、警告“Prototype tablecells must have resue identifiers”
+Prototype cell（iOS 5 模板单元格）的 Identidfier 属性未填写，在属性模板中填写即可。
+
+79、如何读取 info.plist 中的值？
+以下示例代码读取了info.plist 中的 URL Schemes：
+// The Info.plist isconsidered the mainBundle.
+        mainBundle = [NSBundle mainBundle];
+        NSArray* types=[mainBundle objectForInfoDictionaryKey:@"CFBundleURLTypes"];
+        NSDictionary* dictionary=[types objectAtIndex:0];
+        NSArray* schemes=[dictionary objectForKey:@"CFBundleURLSchemes"];
+        NSLog(@"%@",[schemes objectAtIndex:0]);
+
+80、如何让 AtionSheet 不自动解散？
+UIActionSheet 无论点击什么按钮，最终都会自动解散。最好的办法是子类化它，增加一个 noAutoDismiss 属性并覆盖 dismissWithClickedButtonIndex 方法，当此属性为 YES 时，不进行解散动作，为NO 时调用默认的 dismissWithClickedButtonIndex：
+
+#import <UIKit/UIKit.h>
+@interface MyAlertView : UIAlertView
+@property(nonatomic, assign) BOOL noAutoDismiss;
+@end
+#import "MyAlertView.h"
+@implementation MyAlertView
+-(void)dismissWithClickedButtonIndex:(NSInteger)buttonIndex animated:(BOOL)animated {
+    if(self.noAutoDismiss)
+        return;
+    [super dismissWithClickedButtonIndex:buttonIndex animated:animated];
+}
+@end
+
+81、在执行 RSA_public_encrypt函数时崩溃
+这个问题很奇怪。使用两台设备，一台系统为 6.1，一台系统为 6.02，同样的代码在 6.02 版本中一切正常，在 6.1 版本中导致程序崩溃：
+unsigned char buff[2560]={0};
+    int buffSize = 0;
+buffSize = RSA_public_encrypt ( strlen(cleartext),
+                                  (unsigned char*)cleartext, buff, rsa, padding );
+问题在于这一句：
+buffSize = RSA_public_encrypt ( strlen(cleartext),
+                                  (unsigned char*)cleartext, buff, rsa, padding );
+6.1系统iPad为 3G 版，由于使用的 3G 网络（联通3gnet）信号不稳定，导致 rsa 公钥经常性取不到，故 rsa 参数出现 nil。而 6.0 系统iPad为wifi 版，信号稳定，故无此问题。解决方法是检查 rsa 参数的有效性。
+
+82、警告：UITextAlignmentCenteris deprecated in iOS 6
+NSTextAlignmentCenter 已经被 UITextAlignmentCenter 所替代。类似的替代还有一些，你可以使用以下宏：
+#ifdef __IPHONE_6_0 // iOS6 and later
+#   define UITextAlignmentCenter   (UITextAlignment)NSTextAlignmentCenter
+#   define UITextAlignmentLeft     (UITextAlignment)NSTextAlignmentLeft
+#   define UITextAlignmentRight    (UITextAlignment)NSTextAlignmentRight
+#   define UILineBreakModeTailTruncation    (UILineBreakMode)NSLineBreakByTruncatingTail
+#   defineUILineBreakModeMiddleTruncation  (UILineBreakMode)NSLineBreakByTruncatingMiddle
+#endif
+
+83、Xcode5 中无法设置 -fno-objc-arc
+Xcode5 默认使用 ARC，同时隐藏了Compile Sources 中的“ Compiler Flags”列，因此你无法设置 .m 文件的 -fno-objc-arc 选项。要显示.m 文件的 Compiler Flags列，你可以使用菜单 “View->Utilities->Hide Utilities”来暂时关闭右侧的 Utilities 窗口，以显示 Compiler Flags 列，这样你就可以设置.m文件的 -fno-objc-arc 标志。
+
+84、警告：‘ABAddressBookCreate'is deprecated:first deprecated in iOS 6.0
+iOS6.0以后该方法被抛弃，用 ABAddressBookCreateWithOptions方法替代：
+CFErrorRef* error=nil;
+    ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, error);
+
+85、iOS6.0 以后如何读取手机通讯录？
+iOS 6以后，AddressBook 框架发生了改变，尤其是app访问手机通讯录需要获得用户授权。因此，除了需要使用新的ABAddressBookCreateWithOptions 初始化方法之外，我们还需要使用 AddressBook 框架新的 ABAddressBookRequestAccessWithCompletion 方法，用以获知用户是否授权 ：
++ (void)fetchContacts:(void (^)(NSArray *contacts))successfailure:(void (^)(NSError *error))failure {
+#ifdef __IPHONE_6_0
+    if (ABAddressBookRequestAccessWithCompletion) {
+        CFErrorRef err;
+        ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, &err);
+        ABAddressBookRequestAccessWithCompletion(addressBook, ^(bool granted, CFErrorRef error) {
+            // ABAddressBook doesn'tgaurantee execution of this block on main thread, but we want our callbacks tobe
+            dispatch_async(dispatch_get_main_queue(), ^{
+               if (!granted) {
+                   failure((__bridge NSError *)error);
+               } else {
+                   readAddressBookContacts(addressBook, success);
+               }
+                CFRelease(addressBook);
+           });
+        });
+    }
+#else
+        // on iOS < 6
+       ABAddressBookRef addressBook = ABAddressBookCreate();
+       readAddressBookContacts(addressBook, success);
+       CFRelease(addressBook);
+    }
+#endif
+}
+这个方法有两个块参数 success 和 failure，分别用于执行用户授权访问的两种情况：同意和不同意。
+在代码调用 ABAddressBookRequestAccessWithCompletion函数时，第2个参数是一个块，该块的 granted 参数用于告知用户是否同意。如果 granted 为No（不同意）,我们调用failure块。 如果 granted 为Yes（同意），我们将调用 readAddressBookContacts 函数，进一步读取联系人信息。
+readAddressBookContacts 声明如下：
+static voidreadAddressBookContacts(ABAddressBookRef addressBook, void (^completion)(NSArray *contacts)) {
+    // do stuff with addressBook
+    NSArray *contacts = (NSArray *)CFBridgingRelease(ABAddressBookCopyArrayOfAllPeople(addressBook));
+    completion(contacts);
+}
+首先从 addressBook 中获取所有联系人（结果放到一个NSArray 数组中），然后调用 completion 块（即 fetchContacts 方法的 success 块）。在 completion 中我们可以对数组进行迭代。
+一个调用 fetchContacts 方法的例子：
++(void)getAddressBook:(void(^)(NSArray*))completion{
+    [self fetchContacts:^(NSArray *contacts) {
+        NSArray *sortedArray=[contactssortedArrayUsingComparator:^(id a, id b) {
+            NSString* fullName1=(NSString*)CFBridgingRelease(ABRecordCopyCompositeName((__bridge ABRecordRef)(a)));
+            NSString* fullName2=(NSString*)CFBridgingRelease(ABRecordCopyCompositeName((__bridge ABRecordRef)(b)));
+            int len = [fullName1 length] > [fullName2 length]? [fullName2 length]:[fullName1 length];
+            NSLocale *local = [[NSLocale alloc] initWithLocaleIdentifier:@"zh_hans"];
+            return [fullName1 compare:fullName2 options:NSCaseInsensitiveSearch range:NSMakeRange(0, len) locale:local];
+        }];
+        completion(sortedArray);
+    } failure:^(NSError *error) {
+        DLog(@"%@",error);
+    }];
+}
+即在 fetchContacts 的完成块中对联系人姓名进行中文排序。最后调用 completion 块。在 fetchContacts 的错误块中，简单打印错误信息。
+调用 getAddressBook的示例代码如下：
+[AddressBookHelper getAddressBook:^(NSArray *node) {
+        NSLog(@"%@",NSArray);
+    }];
+
+86、ARC警告：PerformSelector may cause a leak because itsselector is unknown
+这个是 ARC 下特有的警告，用#pragma clang diagnostic宏简单地忽略它即可：
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored"-Warc-performSelector-leaks"
+        [targetperformSelector:sel withObject:[NSNumber numberWithBool:YES]];
+#pragma clang diagnostic pop
+
+87、'libxml/HTMLparser.h' file not found
+导入 libxml2.dylib 后出现此错误，尤其是使用 ASIHTTP 框架的时候。在 Build Settings的 Header SearchPaths 列表中增加“${SDK_DIR}/usr/include/libxml2”一项可解决此问题。
+所谓 "$(SDK_ROOT)"是指编译目标所使用的 SDK 的目录，以 iPhone SDK 7.0 (真机)为例，是指/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.0.sdk目录。
+注意，似乎 Xcode 4.6 以后“User Header Search Paths”（或者“Always Search User Paths”）不再有效，因此在 “User HeaderSearch Paths”中配置路径往往是无用的，最好是配置在“Header SearchPaths”中。
+
+88、错误：-[UITableViewdequeueReusableCellWithIdentifier:forIndexPath:]: unrecognized selector
+这是 SDK 6 以后的方法，在 iOS 5.0 中这个方法为：
+ [UITableViewdequeueReusableCellWithIdentifier:]
+
+89、@YES 语法在 iOS5 中无效，提示错误：Unexpected typename 'BOOL': expected expression
+在 IOS6 中，@YES定义为：
+#define YES            ((BOOL)1)
+但在 iOS 5 中，@YES 被少写了一个括号：
+#define YES            (BOOL)1
+因此 @YES 在 iOS 5 中的正确写法应当为 @(YES)。为了简便，你也可以在 .pch 文件中修正这个 Bug：
+#if __has_feature(objc_bool)
+#undef YES
+#undef NO
+#define YES __objc_yes
+#define NO __objc_no
+#endif
+
+90、找不到 Profile 错误“CodeSign error: no provisioning profile at path '/Users/yourname/Library/MobileDevice/ProvisioningProfiles/F87A055A-EC0D-4F19-A015-57AB09DEBECB.mobileprovision'”
+在 ProjectNavigator 中选择你的项目，使用 View ->Version Editor -> Show Version Editor（或者使用工具栏上的“”按钮）。在当前版本（即 左边的文本窗格）中编辑，搜索“F87A055A-EC0D-4F19-A015-57AB09DEBECB”字串，然后将所有的“"PROVISIONING_PROFILE[sdk=iphoneos*]" ="F87A055A-EC0D-4F19-A015-57AB09DEBECB";”行删除。
+
+91、iOS 7 中，导航栏重叠在 ViewController 的 view 之上（即 view 上移了 44 像素）
+将导航控制器的 Top Bar 设置为一种“Opacque ...”（不透明）类型。
+
+92、为什么导航栏的righBarButtonItems 显示的排列顺序跟它们加入时的相反？
+rightBarButtonItems 中的 item 在加入时是从右向左加入的。
+假设我们这样加入3个按钮到 rightBarButtonItems 中：
+[self.navigationItem setRightBarButtonItems:@[b1,b2,b3]animated:NO]; 则你看到的3个按钮排列顺序为:b3,b2,b1。
+
+93、为什么有时候用 OTA 方式安装程序后会多出一个“正在安装...”图标，并无法删除该图标？
+该问题只在 iOS 7 下存在。如下图所示：
+其中，“网络助手”是程序安装完出现在桌面上的图标，“正在安装...”是安装过程中显示的图标，这个图标在安装完成后仍然存在，并且用户无法删除。
+这是由于安装是的描述文件（ .plist 文件）和 .ipa 文件中的 bunndle id 不一致导致的。解决办法，修改项目的Bundle ID为 .plist 文件中的Bundle ID，编译出新的 .ipa 文件，然后重新在设备上安装此 .ipa 文件。此时“正在安装...”图标即可删除。
+
+94、无意中修改了 SDK 的头文件，Xcode报告“'xxx.h' hasbeen modified since the precompiled header was built”
+Clean，仍然无法编译，在关闭 Xcode 时，Xcode 提示文件不存在，无法自动保存，并不允许退出。使用“强制退出...”关闭 Xcode，Clean，重新编译成功。
+
+95、iOS 7.1下in-house发布无法安装 app，报告“Could not load non-https manifest URL”
+将部署所使用的 manifest.plist文件放到 https 服务器上，并且将 manifest URL 由原来的 http 地址改为 https 地址。
+
+96、如何让 UIButton 的 image 位于 title 的右边？
+默认情况下 UIButton 的 image 位于 title 左边：
+但有时候你可能希望是这样的：
+则需要使用到setImageEdgeInsets 方法：
+float width = _button.bounds.size.width;
+    [_buttonsetImageEdgeInsets:UIEdgeInsetsMake(0, width-_button.imageView.bounds.size.width,0, 0)];
+    [_buttonsetTitleEdgeInsets:UIEdgeInsetsMake(0, -_button.imageView.bounds.size.width+5,0, 0)];
+
+97、修改table view的 section header 样式
+请使用UITableViewDelegate 中的 willDisplayHeaderView方法。
+- (void)tableView:(UITableView *)tableViewwillDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
+{
+    if([viewisKindOfClass:[UITableViewHeaderFooterView class]]){
+       UITableViewHeaderFooterView *tableViewHeaderFooterView =(UITableViewHeaderFooterView *) view;
+       tableViewHeaderFooterView.contentView.backgroundColor = [UIColorclearColor];
+       tableViewHeaderFooterView.textLabel.font=[UIFont systemFontOfSize:13];
+       tableViewHeaderFooterView.textLabel.textColor=[UIColor blackColor];
+    }
+}
+
+98、定制 search bar的背景色
+for (UIView *subview in self.searchBar.subviews)
+    {
+        if([subview isKindOfClass:NSClassFromString(@"UISearchBarBackground")])
+        {
+           [subview removeFromSuperview];
+           break;
+        }
+    }
+   self.searchBar.backgroundColor = [UIColor colorWithWhite:0.85 alpha:1];
+
+99、Autolayout 下 UIScrollView 不会滚动
+只有当 UIScrollView 的 ContentSize 大于 UIScrollView 的 frame 大小，UIScrollView 才可滚动。
+但由于 constraints 的影响， 设置 ContentSize 往往无效，因此UIScrollView不可滚动。我们可以实现 viewDidLayoutSubviews 方法，在该方法中设置 ContentSize :
+- (void)viewDidLayoutSubviews {
+_scrollView.contentSize=CGSizeMake(_scrollView.frame.size.width,_scrollView.frame.size.height+60);
+}
+
+100、在头文件中出现某个type“Unknown type name”
+其实该 type 所在的框架或库已被引用。例如出现错误“Unknown type name CGPoint”，而 CGPoint 所在的框架 CoreGraphics 已被项目正确引用了。
+这种错误是由于“交叉头文件引用”导致的。典型的错误是，一个头文件(例如 a.h)在 .pch 文件中包含了。而 .pch 文件在编译任何 .m 文件中都会自动被包含。 因此如果要在 .pch 文件中包含 a.h 文件，正确的做法是用 #ifdef__OBJC__ 宏：
+#ifdef __OBJC__
+    #import "a.h"
+#endif
+
+101、编译错误：ld: library notfound for -lPods
+当项目中使用了 cocoaPods 时，经常出现此错误（通常是 release 的时候）。
+这是由于 pod install 后，cocoaPods 会创建一个新的 workspace。你必须关闭项目并重新打开。问题即可解决。
+
+102、为什么 iOS 的时间总是比真实时间慢8小时       
+例如，一个北京时间"2014-4-4 22:00"（字符串），需要转换成 NSDate。字符串转换成 NSDate 一般是通过 NSDateFormatter 进行的。而在 iOS 上 NSDate 以 GMT 时间存储，因此NSDateFormatter会自动将字符串当前时区的本地时间处理，即将被转换的北京时间（字符串"2014-4-4 22:00"）换成 GMT 时间（"2014-4-4 14:00"）。如果直接把这个 NSDate(longlong，1970以来的秒数或毫秒数)传给服务器，服务器会把这个时间当成北京时间使用（实际上它却是GMT时间），这就导致时间差了8小时。
+正确的做法是在这个 NSDate 的基础上加上时差。而时差的计算需要知道当前时区。[NSTimeZonesystemTimeZone]可以得到当前时区（东8区），然后用 secondsFromGMTForDate: 方法可获得这个时区（东8区）的时差（以秒计）。代码如下：
+NSDateFormatter* df=[NSDateFormatter new];
+//        [dfsetLocale:[NSLocale  currentLocale]];
+       df.dateFormat=@"yyyy-MM-dd HH:mm";
+        NSDate* date=[dfdateFromString:@"2014-4-4 22:00"];
+        NSTimeZone *zone =[NSTimeZone systemTimeZone];
+        NSInteger interval = [zonesecondsFromGMTForDate: date];
+        NSDate *localeDate =[date  dateByAddingTimeInterval:interval];
+       NSLog(@"%@",localeDate);
+
+103、禁止 UITableViewController 中键盘弹出动画
+TableViewController 中内置了键盘弹出动画的代码，当单元格中的输入控件弹出软键盘时，tableView 会自动向上滚动。但这个功能有时候会带来大麻烦，因为有时候输入控件会被滚动到不可视的地方。由于我们无法修改框架的代码，所以这种情况下我们必须放弃使用 TableViewController(子类化），而改用一般的UIViewController+UITableView 代替。但有时候我们必须使用TableViewContrller——例如想使用它的静态单元格，则可以通过下列方法解决。在UITableViewController 子类中覆盖 viewWillAppear 方法，禁用父类的 viewWillAppear 行为。即不要调用[superviewWillAppear:animated]一句：
+-(void)viewWillAppear:(BOOL)animated{
+    // Override super method with don'tcall [super viewWillApper]
+}
+
+104、应该在什么时候使用 NSCache
+NSCache 会自动根据内存压力释放其中的某个缓存对象（例如视图被销毁，或者缓存的对象实在太多）。因此 NSCache 缓存的对象必须是可以重建的，例如这些对象——可以在需要时从网络上下载到的数据。否则，你不应当使用 NSCache——因为对象不知道什么时候就会被销毁了。
+因此，使用 NSCache 时必须注意，如果检索的对象在 cache 中不存在，我们必须重建一个：
+-(CachedObject)getCachedObject:(id)key{
+    id* obj=[NSCacheObjectobjectForKey:key];
+    if (cb==nil) {
+       obj=[[CachedObjectalloc]init];  // Recreate cached object
+       ……
+    }
+    return obj;
+}
+
+105、Pods 在 Xcode5 上Archive 的问题
+问题描述：
+Archive 时出现如下错误（debug 时可能是正常的）：
+ld: library not found for -lPods
+问题是由于 Xcode5.x 现在会检测依赖项目的 architecture ，其设置必须和主项目一致，否则该依赖项目会被拒绝（即不会编译）。
+解决办法：
+在 Pods 项目的所有 target 下，将他们的 architecture 设置为和主项目一致。
+
+106、如何查看一个静态库支持的 Architecture
+使用“lipo -info 静态库文件”命令,例如：
+lipo -info Unrar4iOS
+然后终端会作如下显示:
+Architectures in the fat file: Unrar4iOS are: armv7 armv6 i386
+
+107、项目中引入某些静态库会导致在 Archive 时报“Undefined symbols forarchitecture armv7s/arm64”错误
+正如问题 105 所述。除了用问题 105 中的解决方法，还有一种解决办法。
+首先查看该静态库的 Architecture（参考问题106）。然后修改 Scheme 为该静态库支持的 Architecture。然后修改 Buid Settings 中的 Build Active ArchitectureOnly(仅编译为所选的架构)，将值改为 Yes。然后编译即可。
+
+108、Autolayout 下，UITableView 的高度不正确
+Autolayout 下，如果有导航栏，视图上的 UITableView 受 constraints 的限制，运行时高度被 constraints 重新设置为没有导航栏的高度。此时应该实现viewDidLayoutSubviews 方法，将 constraints 的影响排除：
+- (void)viewDidLayoutSubviews {
+_table.frame=CGRectMake(0,0,self.view.frame.size.width,self.view.frame.size.height);
+}
+
+109、如何修改默认返回按钮的title？
+假设导航为：A视图-->B视图
+如果要改变B视图返回到A视图的返回按钮的title，只需在A视图中使用如下代码：
+self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:self action:nil];
+B视图不用做任何操作。
+
+110、有一个空对象，但它既不是 nil，也不是 null？
+它是 NSNull。你可以打印这个对象（用 po 命令或者 NSLog），则打印结果是“<null>”，而不是“(null)”（nil 对象）。
+由于O-C 的集合对象中不允许插入空值（nil），而 NSNull 并不是 nil，所以就用NSNull 对象来表示这个集合为空（表示列表结束）。而且，与 nil 不同，发送消息给一个 NSNull 将导致异常。
+NSNull具有唯一的方法：[NSNull null]你可以用它来测试一个对象是不是 NSNull:
+BOOL isNSNull(id any){
+    return [any isEqual:[NSNullnull]];
+}

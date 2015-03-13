@@ -1,0 +1,434 @@
+configure 时候动态库找不到
+1、vi /etc/ld.so.conf 添加 
+/usr/local/lib
+/usr/lib 
+/opt/lib 
+2、vi /etc/profile 添加 
+PKG_CONFIG_PATH=/usr/lib/pkgconfig:/usr/local/pkgconfig:/opt/lib/config 
+export PKG_CONFIG_PATH
+3、执行 ldconfig
+
+tar xvfJ gtk+-3.2.0.tar.xz
+tar xvfj gtk+-3.2.0.tar.bz2
+tar -zxvf  memcached-1.4.4.tar.gz
+
+开ssh
+cd /etc/ssh
+vi sshd_config*
+修改permitRootLogin yes
+/etc/init.d/sshd start
+
+查看IP信息：/sbin/ifconfig -a
+vi 使用：A在行后面添加，编辑后，按ESC退出编辑模式，然后ZZ保存退出
+
+[已验证]
+Linux上JDK的安装 
+
+1.    去http://java.sun.com/j2se/1.4.2/download.html 下载一个Linux Platform的JDK，建议下载RPM自解压格式的（RPM in self-extracting file，j2sdk-1_4_2_06-linux-i586-rpm.bin）； 
+2.    上载到Linux服务器上/user/local/lib，在shell下执行命令： 
+[root@LinuxServer rpm]# chmod 755 j2sdk-1_4_2_06-linux-i586-rpm.bin 
+[root@LinuxServer rpm]# ./j2sdk-1_4_2_06-linux-i586-rpm.bin 
+
+这时会有一段Sun的协议，敲几次空格键，当询问是否同意的时候，敲yes就可以了。 
+              Sun Microsystems, Inc. 
+          Binary Code License Agreement 
+                   for the 
+JAVATM 2 SOFTWARE DEVELOPMENT KIT (J2SDK), STANDARD 
+EDITION, VERSION 1.4.2_X 
+… 
+Do you agree to the above license terms? [yes or no]yes 
+Unpacking... 
+Checksumming... 
+0 
+0 
+Extracting... 
+UnZipSFX 5.40 of 28 November 1998, by Info-ZIP (Zip-Bugs@lists.wku.edu). 
+  inflating: j2sdk-1_4_2_06-linux-i586.rpm 
+Done. 
+
+3.    程序会自动生成一个j2sdk-1_4_2_06-linux-i586.rpm文件，这是主程序包，下面来安装； 
+[root@LinuxServer rpm]#rpm –ivh j2sdk-1_4_2_06-linux-i586.rpm 
+Preparing...               ########################################### [100%] 
+   1:j2sdk               ########################################### [100%] 
+
+
+4.    设置环境变量 
+通常都喜欢用export命令直接在shell下设置 
+[root@LinuxServer rpm]# export JAVA_HOME=/usr/java/j2sdk1.4.2_06 
+[root@LinuxServer rpm]# export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar 
+[root@LinuxServer rpm]# export PATH=$PATH:$JAVA_HOME/bin 
+当然这样设置环境变量是可以生效的，但是只对当前shell生效。如果从另外一个shell登陆，将不能使用刚才设置的变量。所以最好的方法还是修改.bashrc 文件。 
+[root@LinuxServer rpm]#vi .bashrc 
+JAVA_HOME=/usr/java/j2sdk1.4.2_06 
+export JAVA_HOME 
+PATH=$PATH:$JAVA_HOME/bin 
+export PATH 
+CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar 
+export CLASSPATH 
+
+[root@LinuxServer rpm]# JAVA-version 
+JAVA version "1.4.2_06" 
+JAVA(TM) 2 Runtime Environment, Standard Edition (build 1.4.2_06-b03) 
+JAVA HotSpot(TM) Client VM (build 1.4.2_06-b03, mixed mode) 
+7.    至此，Linux上JDK的安装完毕。 
+
+
+[已验证]
+首先上传到/opt文件夹解压缩
+
+    gunzip tomcat-4.1.18.tar.gz
+     tar -xf archive.tar
+
+
+在/etc/profile文件中加入如下两行
+
+    export JAVA_HOME=/opt/jdk1.4
+    export TOMCAT_HOME=/opt/tomcat
+
+/opt/tomcat/bin
+
+下，运行命令：
+
+    ./startup.sh
+
+rm -rf dir
+
+-r是遍历删除
+-f是强制删除
+
+tail -f $CATALINA_HOME/logs/catalina.out
+
+
+
+
+
+
+
+帮助命令:  
+man  获取相关命令的帮助信息
+     例如：man dir 可以获取关于dir的使用信息。
+
+info  获取相关命令的详细使用方法
+      例如：info info 可以获取如何使用info的详细信息。
+
+ 
+文件操作： 
+cat  显示文件内容和合并多个文件 
+clear  清屏
+chattr  改变文件属性
+chgrp  改变文件组权
+chmod  改变文件或目录的权限
+chown  改变文件的属权
+comm  比较两个已排过序的文件
+cp  将文件拷贝至另一文件
+dd  从指定文件读取数据写到指定文件
+df  报告磁盘空间使用情况
+diff  比较两个文本文件，列出行不同之处
+du  统计目录／文件所占磁盘空间的大小
+file  辨识文件类型
+emacs  功能强大的编辑环境        
+find  搜索文件并执行指定操作(find2)
+grep  按给定模式搜索文件内容
+head  显示指定文件的前若干行
+less  按页显示文件
+ln  创建文件链接
+locate  查找符合条件的文件
+more  在终端屏幕按帧显示文本文件
+mv  文件或目录的移动或更名
+rm/rmdir  删除文件／目录
+sed  利用script来处理文本文件
+sort  对指定文件按行进行排序
+tail  显示指定文件的最后部分
+touch  创建文件
+tr  转换字符
+vi  全屏编辑器
+wc  显示指定文件中的行数，词数或字符数
+which  在环境变量 $PATH 设置的目录里查找符合条件的文件
+
+ 
+压缩与备份: 
+bzip2/bunzip2  .bz2文件的压缩/解压缩程序
+cpio  备份文件
+dump  备份文件系统
+gzip/gunzip  .gz文件的压缩/解压缩程序
+gzexe  压缩可执行文件
+restore 还原由倾倒(Dump)操作所备份下来的文件或整个文件系统(一个分区)
+tar  将若干文件存档或读取存档文件
+unarj  解压缩.arj文件
+zip/unzip  压缩/解压缩 zip文件
+zipinfo  列出zip压缩文件的详细信息
+
+ 
+磁盘操作: 
+cd/pwd  切换目录/显示当前工作目录
+df  显示磁盘的相关信息
+du  显示目录或文件的大小
+e2fsck  检查ext2/ext3文件系统的正确性
+fdisk  对硬盘进行分区	
+fsck  检查文件系统并尝试修复错误
+losetup  设置循环设备
+ls  列出目录内容
+mkdir  创建目录
+mformat  对MS-DOS文件系统的磁盘进行格式化
+mkbootdisk  建立目前系统的启动盘
+mke2fs  建立ext2文件系统
+mkisofs  制作iso光盘映像文件
+mount/umount 加载文件系统/卸载文件系统
+quota  显示磁盘已使用的空间与限制
+sync  将内存缓冲区内的数据写入磁盘
+tree  以树状图列出目录的内容
+
+ 
+系统操作: 
+alias  设置指令的别名
+chkconfig  检查，设置系统的各种服务
+clock  调整 RTC 时间
+date  显示或设置系统时间与日期
+dmesg  显示开机信息
+eval  重新运算求出参数的内容
+exit  退出目前的shell
+export  设置或显示环境变量
+finger  查找并显示用户信息
+free  显示内存状态
+hostid  显示主机标识
+hostname  显示主机名
+id  显示用户标识
+top  显示，管理执行中的程序
+kill  删除执行中的程序或工作
+last  列出目前与过去登入系统的用户相关信息
+logout  退出系统
+lsmod  显示已载入系统的模块
+modprobe  自动处理可载入模块
+passwd  设置用户密码
+ps  process status 报告程序状况
+reboot  重启计算机
+rhwo  查看系统用户
+rlogin  远程登入
+rpm  管理Linux各项套件的程序
+shutdown  关机 
+su switch user 变更用户身份
+uname  显示系统信息
+useradd/userdel	 添加用户 / 删除用户
+userinfo  图形界面的修改工具
+usermod  修改用户属性，包括用户的shell类型，用户组等，甚至还能改登录名
+w  显示目前注册的用户及用户正运行的命令
+whereis	 确定一个命令的二进制执行码，源码及帮助所在的位置
+who  列出正在使用系统的用户
+whois  查找并显示用户信息
+
+ 
+网络通信: 
+arp  网地址的显示及控制
+ftp  文件传输
+lftp  文件传输
+mail  发送／接收电子邮件
+mesg  允许或拒绝其他用户向自己所用的终端发送信息
+mutt  E-mail管理程序
+ncftp  文件传输
+netstat  显示网络连接、路由表和网络接口信息
+pine  收发电子邮件，浏览新闻组
+ping  向网络上的主机发送 icmp echo request 包
+ssh  安全模式下的远程登录
+telnet  远程登录
+talk  与另一用户对话
+traceroute  显示到达某一主机所经由的路径及所使用的时间
+wget 从网络上自动下载文件
+write  向其他用户的终端写信息
+
+
+　进入vi的命令
+
+　　vi filename: 打开或新建文件，并将光标置于第一行首
+
+　　vi +n filename: 打开文件，并将光标置于第n行首
+
+　　vi + filename: 打开文件，并将光标置于最后一行首
+
+　　vi +/pattern filename: 打开文件，并将光标置于第一个与pattern匹配的串处
+
+　　vi -r filename: 在上次正用vi编辑时发生系统崩溃，恢复filename
+
+　　vi filename……filename: 打开多个文件，依次进行编辑
+
+　　移动光标类命令
+
+　　h: 光标左移一个字符
+
+　　l: 光标右移一个字符
+
+　　space: 光标右移一个字符
+
+　　Backspace: 光标左移一个字符
+
+　　k或Ctrl+p: 光标上移一行
+
+　　j或Ctrl+n: 光标下移一行
+
+　　Enter: 光标下移一行
+
+　　w或W : 光标右移一个字至字首
+
+　　b或B : 光标左移一个字至字首
+
+　　e或E : 光标右移一个字至字尾
+
+　　): 光标移至句尾
+
+　　(: 光标移至句首
+
+　　}: 光标移至段落开头
+
+　　{: 光标移至段落结尾
+
+　　nG: 光标移至第n行首
+
+　　n+: 光标下移n行
+
+　　n-: 光标上移n行
+
+　　n$: 光标移至第n行尾
+
+　　H: 光标移至屏幕顶行
+
+　　M: 光标移至屏幕中间行
+
+　　L: 光标移至屏幕最后行
+
+　　0: 光标移至当前行首
+
+　　$: 光标移至当前行尾
+
+　　屏幕翻滚类命令
+
+　　Ctrl+u: 向文件首翻半屏
+
+　　Ctrl+d: 向文件尾翻半屏
+
+　　Ctrl+f: 向文件尾翻一屏
+
+　　Ctrl＋b: 向文件首翻一屏
+
+　　nz: 将第n行滚至屏幕顶部，不指定n时将当前行滚至屏幕顶部。
+
+　　插入文本类命令
+
+　　i: 在光标前
+
+　　I: 在当前行首
+
+　　a: 光标后
+
+　　A: 在当前行尾
+
+　　o: 在当前行之下新开一行
+
+　　O: 在当前行之上新开一行
+
+　　r: 替换当前字符
+
+　　R: 替换当前字符及其后的字符，直至按ESC键
+
+　　s: 从当前光标位置处开始，以输入的文本替代指定数目的字符
+
+　　S: 删除指定数目的行，并以所输入文本代替之
+
+　　ncw或nCW: 修改指定数目的字
+
+　　nCC: 修改指定数目的行
+
+　　删除命令
+
+　　ndw或ndW: 删除光标处开始及其后的n-1个字
+
+　　do: 删至行首
+
+　　d$: 删至行尾
+
+　　ndd: 删除当前行及其后n-1行
+
+　　x或X: 删除一个字符，x删除光标后的，而X删除光标前的
+
+　　Ctrl+u: 删除输入方式下所输入的文本
+
+　　搜索及替换命令
+
+　　/pattern: 从光标开始处向文件尾搜索pattern
+
+　　pattern: 从光标开始处向文件首搜索pattern
+
+　　n: 在同一方向重复上一次搜索命令
+
+　　N: 在反方向上重复上一次搜索命令
+
+　　:s/p1/p2/g: 将当前行中所有p1均用p2替代
+
+　　:n1,n2s/p1/p2/g: 将第n1至n2行中所有p1均用p2替代
+
+　　:g/p1/s//p2/g: 将文件中所有p1均用p2替换
+
+　　选项设置
+
+　　all: 列出所有选项设置情况
+
+　　term: 设置终端类型
+
+　　ignorance: 在搜索中忽略大小写
+
+　　list: 显示制表位(Ctrl+I)和行尾标志($)
+
+　　number: 显示行号
+
+　　report: 显示由面向行的命令修改过的数目
+
+　　terse: 显示简短的警告信息
+
+　　warn: 在转到别的文件时若没保存当前文件则显示NO write信息
+
+　　nomagic: 允许在搜索模式中，使用前面不带“”的特殊字符
+
+　　nowrapscan: 禁止vi在搜索到达文件两端时，又从另一端开始
+
+　　mesg: 允许vi显示其他用户用write写到自己终端上的信息
+
+　　最后行方式命令
+
+　　:n1,n2 co n3: 将n1行到n2行之间的内容拷贝到第n3行下
+
+　　:n1,n2 m n3:将n1行到n2行之间的内容移至到第n3行下
+
+　　:n1,n2 d: 将 n1行到n2行之间的内容删除
+
+　　:w: 保存当前文件
+
+　　:e filename: 打开文件filename进行编辑
+
+　　:x: 保存当前文件并退出
+
+　　:q: 退出vi
+
+　　:q!: 不保存文件并退出vi
+
+　　:!command: 执行shell命令command
+
+　　:n1,n2 w!command: 将文件中n1行至n2行的内容作为command的输入并执行之， 若不指定n1，n2，则表示将整个文件内容作为command的输入
+
+　　:r!command: 将命令command的输出结果放到当前行
+
+　　寄存器操作
+
+　　"?nyy: 将当前行及其下n行的内容保存到寄存器？中，其中?为一个字母，n为一个数字
+
+　　"?nyw: 将当前行及其下n个字保存到寄存器？中，其中?为一个字母，n为一个数字
+
+　　"?nyl: 将当前行及其下n个字符保存到寄存器？中，其中?为一个字母，n为一个数字
+
+　　"?p: 取出寄存器？中的内容并将其放到光标位置处。这里？可以是一个字母，也可以是一个数字
+
+　　ndd: 将当前行及其下共n行文本删除，并将所删内容放到1号删除寄存器中
+
+
+
+ 
+
+
+

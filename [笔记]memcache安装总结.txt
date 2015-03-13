@@ -1,0 +1,239 @@
+使用Xvfb
+yum install Xvfb
+ Xvfb -fp /usr/local/fonts :3 -screen 0 1024x768x24 &DISPLAY=:3 java -classpath .:/home/work/htmltest/commons-io-2.4.jar:/home/work/htmltest/DJNativeSwing.jar Html2Image 
+
+使用yum : yum update 
+1.删除redhat原有的yum 
+rpm -aq|grep yum|xargs rpm -e --nodeps 
+2.下载yum安装文件 
+wget http://mirrors.163.com/centos/6/os/x86_64/Packages/yum-3.2.29-40.el6.centos.noarch.rpm  
+wget http://mirrors.163.com/centos/6/os/x86_64/Packages/yum-metadata-parser-1.1.2-16.el6.x86_64.rpm   
+wget http://mirrors.163.com/centos/6/os/x86_64/Packages/yum-plugin-fastestmirror-1.1.30-14.el6.noarch.rpm
+wget http://mirrors.163.com/centos/6/os/x86_64/Packages/python-iniparse-0.3.1-2.1.el6.noarch.rpm 
+3.进行安装yum 
+rpm -ivh python-iniparse-0.3.1-2.1.el6.noarch.rpm 
+rpm -ivh yum-metadata-parser-1.1.2-16.el6.x86_64.rpm  
+rpm -ivh yum-3.2.29-40.el6.centos.noarch.rpm yum-plugin-fastestmirror-1.1.30-14.el6.noarch.rpm  
+4.更新repo文件
+mv /etc/yum.repos.d/rhel-source.repo /etc/yum.repos.d/rhel-source.repo.repo.bak
+
+vi /etc/yum.repos.d/rhel-source.repo
+
+内容为：
+
+[base]
+name=CentOS-$releasever - Base
+baseurl=http://mirrors.163.com/centos/6/os/$basearch/
+gpgcheck=1
+gpgkey=http://mirrors.163.com/centos/RPM-GPG-KEY-CentOS-6
+#released updates
+[updates]
+name=CentOS-$releasever - Updates
+baseurl=http://mirrors.163.com/centos/6/updates/$basearch/
+gpgcheck=1
+gpgkey=http://mirrors.163.com/centos/RPM-GPG-KEY-CentOS-6
+#packages used/produced in the build but not released
+#[addons]
+#name=CentOS-$releasever - Addons
+#baseurl=http://mirrors.163.com/centos/$releasever/addons/$basearch/
+#gpgcheck=1
+#gpgkey=http://mirrors.163.com/centos/RPM-GPG-KEY-CentOS-6
+#additional packages that may be useful
+[extras]
+name=CentOS-$releasever - Extras
+baseurl=http://mirrors.163.com/centos/6/extras/$basearch/
+gpgcheck=1
+gpgkey=http://mirrors.163.com/centos/RPM-GPG-KEY-CentOS-6
+#additional packages that extend functionality of existing packages
+[centosplus]
+name=CentOS-$releasever - Plus
+baseurl=http://mirrors.163.com/centos/6/centosplus/$basearch/
+gpgcheck=1
+enabled=0
+5、yum clean all 
+
+6、yum install vim #测试一下可不可以用
+
+
+
+configure 时候动态库找不到
+1、vi /etc/ld.so.conf 添加 
+/usr/local/lib
+/usr/lib 
+/opt/lib 
+2、vi /etc/profile 添加 
+PKG_CONFIG_PATH=/usr/lib/pkgconfig:/usr/local/pkgconfig:/opt/lib/config 
+export PKG_CONFIG_PATH
+3、执行 ldconfig
+
+tar xvfJ gtk+-3.2.0.tar.xz
+tar xvfj gtk+-3.2.0.tar.bz2
+tar -zxvf  memcached-1.4.4.tar.gz
+
+开ssh
+cd /etc/ssh
+vi sshd_config*
+修改permitRootLogin yes
+/etc/init.d/sshd start
+
+window上传linux文件修改: vi aa; :set ff=unix
+ps -a; 
+ps -ef | grep redis; netstat –nlp ;
+kill -9 进程号;
+
+vi笔记
+i 插入
+esc 退出插入模式
+:q 退出vi 
+:x 保存当前文件并退出
+:q! 不保存当前文件并退出
+:w 保存文件
+
+java运行环境
+vi /etc/profile
+JAVA_HOME=/usr/java/j2sdk1.4.2_06 
+export JAVA_HOME 
+PATH=$PATH:$JAVA_HOME/bin 
+export PATH 
+CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar 
+export CLASSPATH 
+或者
+以下方法对所有shell有效
+vi .bashrc 
+JAVA_HOME=/usr/java/j2sdk1.4.2_06 
+export JAVA_HOME 
+PATH=$PATH:$JAVA_HOME/bin 
+export PATH 
+CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar 
+export CLASSPATH 
+
+调试
+echo $PATH 或者echo $JAVA_HOME 或者java -version
+
+程序安装或者上传请到 /opt/目录下
+
+准备条件
+
+a、修改当前时间
+date -s 05/10/2009
+date -s 10:18:00
+
+b、修改hostname,修改以下文件
+/etc/hosts
+/etc/sysconfig/network
+
+c、启动ssh
+cd /etc/ssh
+vi sshd_config*
+修改permitRootLogin yes
+/etc/init.d/sshd start
+
+1）察看mysql是否在自动启动列表中 
+[root@test1 local]#　/sbin/chkconfig --list 
+2）把MySQL添加到你系统的启动服务组里面去 
+[root@test1 local]#　/sbin/chkconfig　–- add　mysql 
+3）把MySQL从启动服务组里面删除。 
+[root@test1 local]#　/sbin/chkconfig　–-del　mysql 
+
+删除目录
+rm abc -f -r
+
+0、安装mysql(采用二级制版本)
+groupadd mysql
+useradd -g mysql mysql
+passwd mysql
+cd /usr/local
+tar xzvf  mysql-5.1.43-linux-x86_64-icc-glibc23.tar.gz
+ln -s mysql-5.1.43-linux-x86_64-icc-glibc23 mysql
+cd mysql
+./scripts/mysql_install_db --user=mysql
+如果出现下列错误请安装compat-libstdc++-33-3.2.3-61.x86_64.rpm，
+执行rpm -ivh compat-libstdc++-33-3.2.3-61.x86_64.rpm。
+./scripts/mysql_install_db --user=mysql
+文件安装成功。
+chown -R root .
+chown -R mysql data
+chgrp -R mysql .
+cp ./support-files/mysql.server /etc/init.d/mysql
+cp ./support-files/my-medium.cnf /etc/my.cnf
+/etc/init.d/mysql start
+
+授予远程用户链接
+grant select,insert,update,delete on *.* to root@192.168.20.72 Identified by "root"; 
+
+
+1、安装 libevent(存放路径：/usr/local/lib)
+//先解压缩
+tar -zxvf  libevent-1.4.13-stable.tar.gz
+//切换到libevent的目录中
+cd libevent-1.4.13-stable
+//指定安装路径到/usr/目录下
+./configure --prefix=/usr/
+//编译
+make
+//安装
+make install
+
+
+2、安装memcached(存放路径：/usr/local/lib)
+//先解压缩
+tar -zxvf  memcached-1.4.4.tar.gz
+//切换到memcache的目录中
+cd memcached-1.4.4
+//指定安装路径到/usr/local/server/memcache目录下,同时指定libevent的安装位置
+./configure --prefix=/usr/local/memcached --with-libevent=/usr/
+//编译
+make
+//安装
+make install
+
+3、测试
+ls /usr/lib |grep libevent
+
+ls -al /usr/local/memcached/bin
+
+4、启动
+/usr/local/memcached/bin/memcached  -d  -m 128 -l 192.168.20.208 -p 11211 -u root
+-d选项是启动一个守护进程，
+-m是分配给Memcache使用的内存数量，单位是MB
+-u是运行Memcache的用户
+-l是监听的服务器IP地址
+-p是设置Memcache监听的端口
+-c选项是最大运行的并发连接数，默认是1024
+-P是设置保存Memcache的pid文件
+
+5、启动后测试
+telnet 192.168.20.88 11211
+1）、查询状态命令：stats
+2）、查询版本号 version
+3）、退出命令 quit
+4）、显示各个slab的信息，包括chunk的大小、数目、使用情况等：stats slabs5）、显示各个slab中item的数目和最老item的年龄(最后一次访问距离现在的秒数)：stats items
+6）、显示内存分配：stats malloc
+7）、清空缓存数据（其实是将所有缓存数据标记为过期）：flush_all
+
+6、安装libmemcached
+tar xzf libmemcached-0.26.tar.gz
+cd libmemcached-0.26
+./configure –with-memcached=/usr/local/memcached/bin/memcached
+make
+make install 
+
+7、安装memcached_functions
+tar xzf memcached_functions_mysql-1.0.tar.gz
+cd memcached_functions_mysql-1.0
+export LD_LIBRARY_PATH=/usr/local/lib 
+./configure --with-mysql=/usr/local/mysql/bin/mysql_config --libdir=/usr/local/mysql/lib/mysql/
+make
+make install
+编译完成后，将编译好的库文件复制到mysql 的插件目录下，以便加载使用。
+cp /usr/local/mysql/lib/mysql/libmemcached_functions_mysql* /usr/local/mysql/lib/plugin/
+添加UDF的SQL文件用于初始化，命令如下：
+#/usr/local/mysql/bin/mysql
+mysql>use mysql;
+mysql>source /usr/local/memcached_functions_mysql/sql/install_functions.sql;
+检查安装是否成功
+mysql> select name,dl from mysql.func;
+测试可以参考 memcached_functions_mysql-1.1/sql/trigger_fun.sql
+通过trigger调用udf插入到memcached中
+
+
