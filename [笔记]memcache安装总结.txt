@@ -99,7 +99,8 @@ CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
 export CLASSPATH 
 或者
 以下方法对所有shell有效
-vi .bashrc 
+vi ~/.bash_profile
+vi ~/.bashrc 
 JAVA_HOME=/usr/java/j2sdk1.4.2_06 
 export JAVA_HOME 
 PATH=$PATH:$JAVA_HOME/bin 
